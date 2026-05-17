@@ -1,0 +1,1619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DSA Exam Revision</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Syne:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --bg2: #111118;
+    --bg3: #1a1a24;
+    --bg4: #22222f;
+    --accent: #7c6df5;
+    --accent2: #a594f9;
+    --accent3: #c4b5fd;
+    --teal: #2dd4bf;
+    --amber: #fbbf24;
+    --red: #f87171;
+    --green: #4ade80;
+    --text: #f0eeff;
+    --text2: #a09cc0;
+    --text3: #6b6880;
+    --border: rgba(124,109,245,0.2);
+    --card-border: rgba(255,255,255,0.07);
+    --radius: 12px;
+    --radius-sm: 8px;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--bg); color:var(--text); font-family:'Inter',sans-serif; min-height:100vh; overflow-x:hidden; }
+
+  /* HEADER */
+  .header { background:var(--bg2); border-bottom:1px solid var(--border); padding:0 2rem; display:flex; align-items:center; justify-content:space-between; height:64px; position:sticky; top:0; z-index:100; }
+  .logo { font-family:'Syne',sans-serif; font-weight:800; font-size:1.3rem; background:linear-gradient(135deg,var(--accent2),var(--teal)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+  .header-nav { display:flex; gap:4px; }
+  .nav-btn { background:none; border:1px solid transparent; color:var(--text2); font-family:'Inter',sans-serif; font-size:0.85rem; padding:7px 16px; border-radius:var(--radius-sm); cursor:pointer; transition:all .2s; }
+  .nav-btn.active, .nav-btn:hover { background:var(--bg3); border-color:var(--border); color:var(--accent3); }
+  .tag { background:rgba(124,109,245,0.15); border:1px solid rgba(124,109,245,0.3); color:var(--accent3); font-size:0.75rem; padding:3px 10px; border-radius:20px; font-family:'Syne',sans-serif; font-weight:600; }
+
+  /* LAYOUT */
+  .app { display:flex; height:calc(100vh - 64px); }
+  .sidebar { width:280px; min-width:280px; background:var(--bg2); border-right:1px solid var(--card-border); overflow-y:auto; padding:1rem; }
+  .main { flex:1; overflow-y:auto; padding:2rem; }
+
+  /* SIDEBAR */
+  .sidebar-section { margin-bottom:1.5rem; }
+  .sidebar-label { font-size:0.7rem; font-weight:600; letter-spacing:.1em; text-transform:uppercase; color:var(--text3); margin-bottom:0.5rem; padding:0 0.5rem; font-family:'Syne',sans-serif; }
+  .topic-btn { width:100%; text-align:left; background:none; border:1px solid transparent; color:var(--text2); font-family:'Inter',sans-serif; font-size:0.83rem; padding:9px 12px; border-radius:var(--radius-sm); cursor:pointer; transition:all .15s; display:flex; align-items:center; gap:8px; margin-bottom:2px; }
+  .topic-btn:hover { background:var(--bg3); color:var(--text); }
+  .topic-btn.active { background:rgba(124,109,245,0.12); border-color:rgba(124,109,245,0.3); color:var(--accent3); }
+  .topic-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+  .dot-sort { background:var(--amber); }
+  .dot-tree { background:var(--green); }
+  .dot-graph { background:var(--teal); }
+  .dot-list { background:var(--red); }
+  .dot-stack { background:var(--accent2); }
+  .marks-badge { margin-left:auto; font-size:0.7rem; background:var(--bg4); border:1px solid var(--card-border); border-radius:4px; padding:1px 6px; color:var(--text3); }
+
+  /* CONTENT VIEWS */
+  .view { display:none; }
+  .view.active { display:block; }
+
+  /* HERO / OVERVIEW */
+  .hero { text-align:center; padding:2rem 0 3rem; }
+  .hero-title { font-family:'Syne',sans-serif; font-size:2.8rem; font-weight:800; line-height:1.1; margin-bottom:1rem; }
+  .hero-title span { background:linear-gradient(135deg,var(--accent2),var(--teal)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+  .hero-sub { color:var(--text2); font-size:1rem; max-width:500px; margin:0 auto 2rem; line-height:1.7; }
+  .stats-row { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; margin-bottom:2rem; }
+  .stat-card { background:var(--bg2); border:1px solid var(--card-border); border-radius:var(--radius); padding:1.2rem 2rem; text-align:center; }
+  .stat-num { font-family:'Syne',sans-serif; font-size:2rem; font-weight:800; color:var(--accent2); }
+  .stat-label { font-size:0.8rem; color:var(--text3); margin-top:2px; }
+  .grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+  .grid-3 { display:grid; grid-template-columns:repeat(3,1fr); gap:1rem; }
+  .cat-card { background:var(--bg2); border:1px solid var(--card-border); border-radius:var(--radius); padding:1.5rem; cursor:pointer; transition:all .2s; }
+  .cat-card:hover { border-color:var(--border); background:var(--bg3); transform:translateY(-2px); }
+  .cat-icon { font-size:1.5rem; margin-bottom:0.8rem; }
+  .cat-title { font-family:'Syne',sans-serif; font-size:1rem; font-weight:700; margin-bottom:0.4rem; }
+  .cat-count { font-size:0.8rem; color:var(--text3); }
+
+  /* PSEUDOCODE VIEWER */
+  .topic-header { margin-bottom:1.5rem; }
+  .topic-title { font-family:'Syne',sans-serif; font-size:1.8rem; font-weight:800; margin-bottom:0.5rem; }
+  .topic-meta { display:flex; align-items:center; gap:0.75rem; flex-wrap:wrap; }
+  .badge { font-size:0.72rem; padding:3px 10px; border-radius:20px; font-family:'Syne',sans-serif; font-weight:600; border:1px solid; }
+  .badge-amber { background:rgba(251,191,36,0.1); border-color:rgba(251,191,36,0.3); color:var(--amber); }
+  .badge-teal { background:rgba(45,212,191,0.1); border-color:rgba(45,212,191,0.3); color:var(--teal); }
+  .badge-red { background:rgba(248,113,113,0.1); border-color:rgba(248,113,113,0.3); color:var(--red); }
+  .badge-green { background:rgba(74,222,128,0.1); border-color:rgba(74,222,128,0.3); color:var(--green); }
+  .badge-purple { background:rgba(124,109,245,0.15); border-color:rgba(124,109,245,0.3); color:var(--accent3); }
+  .info-box { background:var(--bg3); border:1px solid var(--card-border); border-radius:var(--radius); padding:1rem 1.25rem; margin-bottom:1rem; font-size:0.9rem; color:var(--text2); line-height:1.7; }
+  .info-box strong { color:var(--accent3); }
+  .section-title { font-family:'Syne',sans-serif; font-size:0.85rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:var(--text3); margin:1.5rem 0 0.75rem; }
+  .code-block { background:#0d0d15; border:1px solid var(--card-border); border-radius:var(--radius); padding:1.25rem 1.5rem; font-family:'JetBrains Mono',monospace; font-size:0.83rem; line-height:1.9; overflow-x:auto; position:relative; }
+  .code-block .kw { color:#c792ea; }
+  .code-block .fn { color:#82aaff; }
+  .code-block .cm { color:#546e7a; font-style:italic; }
+  .code-block .num { color:#f78c6c; }
+  .code-block .str { color:#c3e88d; }
+  .code-block .op { color:#89ddff; }
+  .copy-btn { position:absolute; top:10px; right:10px; background:var(--bg4); border:1px solid var(--card-border); color:var(--text3); font-size:0.72rem; padding:4px 10px; border-radius:6px; cursor:pointer; font-family:'Inter',sans-serif; transition:all .2s; }
+  .copy-btn:hover { color:var(--text); border-color:var(--border); }
+  .complexity-table { width:100%; border-collapse:collapse; font-size:0.85rem; }
+  .complexity-table th { background:var(--bg3); color:var(--text3); font-size:0.75rem; text-transform:uppercase; letter-spacing:.05em; padding:10px 14px; text-align:left; font-weight:600; border-bottom:1px solid var(--card-border); }
+  .complexity-table td { padding:10px 14px; border-bottom:1px solid rgba(255,255,255,0.04); color:var(--text2); }
+  .complexity-table tr:last-child td { border-bottom:none; }
+  .complexity-table tr:hover td { background:rgba(255,255,255,0.02); }
+  .tc-best { color:var(--green); font-family:'JetBrains Mono',monospace; font-weight:600; }
+  .tc-avg { color:var(--amber); font-family:'JetBrains Mono',monospace; font-weight:600; }
+  .tc-worst { color:var(--red); font-family:'JetBrains Mono',monospace; font-weight:600; }
+  .tips-list { list-style:none; }
+  .tips-list li { display:flex; gap:10px; padding:8px 0; font-size:0.87rem; color:var(--text2); border-bottom:1px solid rgba(255,255,255,0.04); line-height:1.5; }
+  .tips-list li:last-child { border-bottom:none; }
+  .tips-list li::before { content:"→"; color:var(--accent2); flex-shrink:0; }
+  .algo-tabs { display:flex; gap:4px; margin-bottom:1rem; flex-wrap:wrap; }
+  .algo-tab { background:var(--bg3); border:1px solid var(--card-border); color:var(--text2); font-size:0.8rem; padding:6px 14px; border-radius:6px; cursor:pointer; font-family:'Inter',sans-serif; transition:all .15s; }
+  .algo-tab.active { background:rgba(124,109,245,0.15); border-color:rgba(124,109,245,0.4); color:var(--accent3); }
+  .sub-content { display:none; }
+  .sub-content.active { display:block; }
+
+  /* QUIZ */
+  .quiz-header { margin-bottom:2rem; }
+  .quiz-progress { background:var(--bg3); border-radius:20px; height:6px; overflow:hidden; margin-bottom:0.5rem; }
+  .quiz-bar { background:linear-gradient(90deg,var(--accent),var(--teal)); height:100%; border-radius:20px; transition:width .4s; }
+  .quiz-meta { display:flex; justify-content:space-between; font-size:0.8rem; color:var(--text3); }
+  .quiz-card { background:var(--bg2); border:1px solid var(--card-border); border-radius:var(--radius); padding:2rem; margin-bottom:1.5rem; }
+  .quiz-q { font-family:'Syne',sans-serif; font-size:1.1rem; font-weight:700; margin-bottom:1.5rem; line-height:1.5; }
+  .quiz-options { display:flex; flex-direction:column; gap:10px; }
+  .quiz-opt { background:var(--bg3); border:1px solid var(--card-border); border-radius:var(--radius-sm); padding:12px 16px; cursor:pointer; font-size:0.9rem; color:var(--text2); transition:all .2s; font-family:'JetBrains Mono',monospace; text-align:left; }
+  .quiz-opt:hover { border-color:var(--border); color:var(--text); }
+  .quiz-opt.correct { background:rgba(74,222,128,0.1); border-color:rgba(74,222,128,0.4); color:var(--green); }
+  .quiz-opt.wrong { background:rgba(248,113,113,0.1); border-color:rgba(248,113,113,0.4); color:var(--red); }
+  .quiz-opt:disabled { cursor:not-allowed; opacity:0.8; }
+  .quiz-feedback { margin-top:1rem; padding:12px 16px; border-radius:var(--radius-sm); font-size:0.88rem; line-height:1.6; display:none; }
+  .quiz-feedback.show { display:block; }
+  .quiz-feedback.correct-fb { background:rgba(74,222,128,0.08); border:1px solid rgba(74,222,128,0.2); color:var(--green); }
+  .quiz-feedback.wrong-fb { background:rgba(248,113,113,0.08); border:1px solid rgba(248,113,113,0.2); color:var(--red); }
+  .quiz-actions { display:flex; gap:10px; justify-content:flex-end; }
+  .btn { padding:10px 22px; border-radius:var(--radius-sm); font-family:'Syne',sans-serif; font-weight:700; font-size:0.85rem; cursor:pointer; transition:all .2s; border:1px solid; }
+  .btn-primary { background:var(--accent); border-color:var(--accent); color:#fff; }
+  .btn-primary:hover { background:var(--accent2); border-color:var(--accent2); }
+  .btn-outline { background:none; border-color:var(--border); color:var(--accent3); }
+  .btn-outline:hover { background:rgba(124,109,245,0.1); }
+  .score-card { background:var(--bg2); border:1px solid var(--card-border); border-radius:var(--radius); padding:3rem; text-align:center; }
+  .score-num { font-family:'Syne',sans-serif; font-size:4rem; font-weight:800; background:linear-gradient(135deg,var(--accent2),var(--teal)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+  .score-label { color:var(--text2); font-size:1rem; margin-top:0.5rem; }
+  .score-msg { font-size:1.1rem; margin:1rem 0 2rem; color:var(--text); }
+
+  /* CHEAT SHEET */
+  .cheat-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+  .cheat-card { background:var(--bg2); border:1px solid var(--card-border); border-radius:var(--radius); padding:1.25rem; }
+  .cheat-card-title { font-family:'Syne',sans-serif; font-size:0.9rem; font-weight:700; margin-bottom:1rem; display:flex; align-items:center; gap:8px; }
+  .cheat-row { display:flex; justify-content:space-between; align-items:center; padding:6px 0; border-bottom:1px solid rgba(255,255,255,0.04); font-size:0.82rem; }
+  .cheat-row:last-child { border-bottom:none; }
+  .cheat-algo { color:var(--text2); }
+  .cheat-tc { font-family:'JetBrains Mono',monospace; font-size:0.8rem; }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width:5px; }
+  ::-webkit-scrollbar-track { background:var(--bg2); }
+  ::-webkit-scrollbar-thumb { background:var(--bg4); border-radius:3px; }
+
+  /* RESPONSIVE */
+  @media(max-width:900px) {
+    .sidebar { width:220px; min-width:220px; }
+    .grid-2, .grid-3, .cheat-grid { grid-template-columns:1fr; }
+  }
+  @media(max-width:650px) {
+    .sidebar { display:none; }
+  }
+
+  .divider { height:1px; background:var(--card-border); margin:1.5rem 0; }
+  .highlight { color:var(--accent2); font-weight:600; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">DSA Revision ⚡</div>
+  <div class="header-nav">
+    <button class="nav-btn active" onclick="showView('overview')">Overview</button>
+    <button class="nav-btn" onclick="showView('pseudocode')">Pseudocodes</button>
+    <button class="nav-btn" onclick="showView('quiz')">Quiz</button>
+    <button class="nav-btn" onclick="showView('cheatsheet')">Cheat Sheet</button>
+  </div>
+  <div class="tag">Exam Prep</div>
+</div>
+
+<div class="app">
+  <!-- SIDEBAR -->
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Sorting Algorithms</div>
+      <button class="topic-btn" onclick="loadTopic('quicksort')"><span class="topic-dot dot-sort"></span>Quick Sort<span class="marks-badge">8-10m</span></button>
+      <button class="topic-btn" onclick="loadTopic('mergesort')"><span class="topic-dot dot-sort"></span>Merge Sort<span class="marks-badge">8-10m</span></button>
+      <button class="topic-btn" onclick="loadTopic('bubblesort')"><span class="topic-dot dot-sort"></span>Bubble Sort<span class="marks-badge">2-4m</span></button>
+      <button class="topic-btn" onclick="loadTopic('insertsort')"><span class="topic-dot dot-sort"></span>Insertion Sort<span class="marks-badge">5-7m</span></button>
+      <button class="topic-btn" onclick="loadTopic('selectsort')"><span class="topic-dot dot-sort"></span>Selection Sort<span class="marks-badge">2-4m</span></button>
+      <button class="topic-btn" onclick="loadTopic('binsearch')"><span class="topic-dot dot-sort"></span>Binary Search<span class="marks-badge">2-4m</span></button>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Trees</div>
+      <button class="topic-btn" onclick="loadTopic('traversals')"><span class="topic-dot dot-tree"></span>Tree Traversals<span class="marks-badge">5-7m</span></button>
+      <button class="topic-btn" onclick="loadTopic('bst')"><span class="topic-dot dot-tree"></span>BST Insert<span class="marks-badge">5-7m</span></button>
+      <button class="topic-btn" onclick="loadTopic('avl')"><span class="topic-dot dot-tree"></span>AVL Rotations<span class="marks-badge">8-10m</span></button>
+      <button class="topic-btn" onclick="loadTopic('exptree')"><span class="topic-dot dot-tree"></span>Expression Tree<span class="marks-badge">2-4m</span></button>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Graphs</div>
+      <button class="topic-btn" onclick="loadTopic('bfs')"><span class="topic-dot dot-graph"></span>BFS<span class="marks-badge">5-7m</span></button>
+      <button class="topic-btn" onclick="loadTopic('dfs')"><span class="topic-dot dot-graph"></span>DFS<span class="marks-badge">5-7m</span></button>
+      <button class="topic-btn" onclick="loadTopic('dijkstra')"><span class="topic-dot dot-graph"></span>Dijkstra<span class="marks-badge">8-10m</span></button>
+      <button class="topic-btn" onclick="loadTopic('topo')"><span class="topic-dot dot-graph"></span>Topological Sort<span class="marks-badge">5-7m</span></button>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Linked Lists</div>
+      <button class="topic-btn" onclick="loadTopic('llinsert')"><span class="topic-dot dot-list"></span>LL Insert (Head)<span class="marks-badge">2-4m</span></button>
+      <button class="topic-btn" onclick="loadTopic('llmiddle')"><span class="topic-dot dot-list"></span>LL Middle Element<span class="marks-badge">2-4m</span></button>
+      <button class="topic-btn" onclick="loadTopic('polyadd')"><span class="topic-dot dot-list"></span>Polynomial Addition<span class="marks-badge">8-10m</span></button>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Stack & Queue</div>
+      <button class="topic-btn" onclick="loadTopic('stack')"><span class="topic-dot dot-stack"></span>Stack Push/Pop<span class="marks-badge">5-7m</span></button>
+      <button class="topic-btn" onclick="loadTopic('queue')"><span class="topic-dot dot-stack"></span>Circular Queue<span class="marks-badge">5-7m</span></button>
+      <button class="topic-btn" onclick="loadTopic('infix')"><span class="topic-dot dot-stack"></span>Infix → Postfix<span class="marks-badge">8-10m</span></button>
+      <button class="topic-btn" onclick="loadTopic('hanoi')"><span class="topic-dot dot-stack"></span>Tower of Hanoi<span class="marks-badge">8-10m</span></button>
+    </div>
+  </div>
+
+  <!-- MAIN CONTENT -->
+  <div class="main">
+
+    <!-- OVERVIEW -->
+    <div class="view active" id="view-overview">
+      <div class="hero">
+        <div class="hero-title">Master <span>DSA</span> for Your Exam</div>
+        <div class="hero-sub">All high-yield pseudocodes, time complexities, and key concepts — organized by marks and topic. Let's crack it. 🎯</div>
+        <div class="stats-row">
+          <div class="stat-card"><div class="stat-num">20</div><div class="stat-label">Algorithms</div></div>
+          <div class="stat-card"><div class="stat-num">50+</div><div class="stat-label">Quiz Questions</div></div>
+          <div class="stat-card"><div class="stat-num">5</div><div class="stat-label">Topic Groups</div></div>
+          <div class="stat-card"><div class="stat-num">10m</div><div class="stat-label">Max Marks/Q</div></div>
+        </div>
+      </div>
+      <div class="section-title">Browse by Topic Area</div>
+      <div class="grid-3" style="margin-bottom:2rem;">
+        <div class="cat-card" onclick="loadTopic('quicksort')"><div class="cat-icon">⚡</div><div class="cat-title" style="color:var(--amber)">Sorting</div><div class="cat-count">6 algorithms → 2 to 10 marks</div></div>
+        <div class="cat-card" onclick="loadTopic('traversals')"><div class="cat-icon">🌳</div><div class="cat-title" style="color:var(--green)">Trees & AVL</div><div class="cat-count">4 topics → up to 10 marks</div></div>
+        <div class="cat-card" onclick="loadTopic('bfs')"><div class="cat-icon">🕸️</div><div class="cat-title" style="color:var(--teal)">Graph Algorithms</div><div class="cat-count">4 algorithms → up to 10 marks</div></div>
+        <div class="cat-card" onclick="loadTopic('llinsert')"><div class="cat-icon">🔗</div><div class="cat-title" style="color:var(--red)">Linked Lists</div><div class="cat-count">3 topics → 2 to 10 marks</div></div>
+        <div class="cat-card" onclick="loadTopic('stack')"><div class="cat-icon">📚</div><div class="cat-title" style="color:var(--accent2)">Stack & Queue</div><div class="cat-count">4 topics → 5 to 10 marks</div></div>
+        <div class="cat-card" onclick="showView('quiz')"><div class="cat-icon">🧠</div><div class="cat-title" style="color:var(--accent3)">Take the Quiz</div><div class="cat-count">Test yourself → 50+ questions</div></div>
+      </div>
+      <div class="section-title">Mark-Wise Predicted Questions</div>
+      <div class="grid-2">
+        <div class="info-box"><strong style="color:var(--green)">2–4 Marks (Short):</strong> LL insert at head, find middle of LL, Binary Search, Bubble & Selection sort complexities, check binary tree, evaluate expression tree.</div>
+        <div class="info-box"><strong style="color:var(--amber)">5–7 Marks (Medium):</strong> Stack push/pop array, circular queue enqueue/dequeue, DFS traversal, BST insert, Insertion sort + complexity, Topological sort.</div>
+        <div class="info-box"><strong style="color:var(--red)">8–10 Marks (Long):</strong> Tower of Hanoi + analysis, Polynomial addition using LL, AVL rotations, Dijkstra's algorithm, Quick sort + partition, Merge sort + complexity, Infix to Postfix.</div>
+        <div class="info-box"><strong style="color:var(--accent2)">Pro Tip:</strong> For long questions, always write the <em>helper function first</em> (e.g., PARTITION before QUICKSORT, MERGE before MERGESORT), then the main algorithm, then complexity analysis.</div>
+      </div>
+    </div>
+
+    <!-- PSEUDOCODE VIEW -->
+    <div class="view" id="view-pseudocode">
+      <div id="topic-content">
+        <div class="hero-sub" style="text-align:center;margin-top:4rem;">← Select a topic from the sidebar to view pseudocode</div>
+      </div>
+    </div>
+
+    <!-- QUIZ VIEW -->
+    <div class="view" id="view-quiz">
+      <div class="topic-header">
+        <div class="topic-title">Test Yourself 🧠</div>
+        <div class="topic-meta"><span class="badge badge-purple">50+ Questions</span><span class="badge badge-teal">All Topics</span></div>
+      </div>
+      <div id="quiz-container"></div>
+    </div>
+
+    <!-- CHEAT SHEET -->
+    <div class="view" id="view-cheatsheet">
+      <div class="topic-header">
+        <div class="topic-title">Time Complexity Cheat Sheet</div>
+        <div class="topic-meta"><span class="badge badge-purple">Quick Reference</span></div>
+      </div>
+      <div class="cheat-grid">
+        <div class="cheat-card">
+          <div class="cheat-card-title" style="color:var(--amber)">⚡ Sorting Algorithms</div>
+          <div class="cheat-row"><span class="cheat-algo">Bubble Sort</span><span class="cheat-tc"><span class="tc-best">O(n)</span> / <span class="tc-avg">O(n²)</span> / <span class="tc-worst">O(n²)</span></span></div>
+          <div class="cheat-row"><span class="cheat-algo">Selection Sort</span><span class="cheat-tc"><span class="tc-best">O(n²)</span> / <span class="tc-avg">O(n²)</span> / <span class="tc-worst">O(n²)</span></span></div>
+          <div class="cheat-row"><span class="cheat-algo">Insertion Sort</span><span class="cheat-tc"><span class="tc-best">O(n)</span> / <span class="tc-avg">O(n²)</span> / <span class="tc-worst">O(n²)</span></span></div>
+          <div class="cheat-row"><span class="cheat-algo">Merge Sort</span><span class="cheat-tc"><span class="tc-best">O(n log n)</span> / <span class="tc-avg">O(n log n)</span> / <span class="tc-worst">O(n log n)</span></span></div>
+          <div class="cheat-row"><span class="cheat-algo">Quick Sort</span><span class="cheat-tc"><span class="tc-best">O(n log n)</span> / <span class="tc-avg">O(n log n)</span> / <span class="tc-worst">O(n²)</span></span></div>
+          <div class="cheat-row"><span class="cheat-algo">Binary Search</span><span class="cheat-tc"><span class="tc-best">O(1)</span> / <span class="tc-avg">O(log n)</span> / <span class="tc-worst">O(log n)</span></span></div>
+        </div>
+        <div class="cheat-card">
+          <div class="cheat-card-title" style="color:var(--green)">🌳 Tree Operations</div>
+          <div class="cheat-row"><span class="cheat-algo">BST Insert</span><span class="cheat-tc"><span class="tc-best">O(log n)</span> / <span class="tc-avg">O(log n)</span> / <span class="tc-worst">O(n)</span></span></div>
+          <div class="cheat-row"><span class="cheat-algo">BST Search</span><span class="cheat-tc"><span class="tc-best">O(1)</span> / <span class="tc-avg">O(log n)</span> / <span class="tc-worst">O(n)</span></span></div>
+          <div class="cheat-row"><span class="cheat-algo">AVL Insert</span><span class="cheat-tc"><span class="tc-best">O(log n)</span> / <span class="tc-avg">O(log n)</span> / <span class="tc-worst">O(log n)</span></span></div>
+          <div class="cheat-row"><span class="cheat-algo">Tree Traversal</span><span class="cheat-tc"><span class="tc-best">O(n)</span> / <span class="tc-avg">O(n)</span> / <span class="tc-worst">O(n)</span></span></div>
+        </div>
+        <div class="cheat-card">
+          <div class="cheat-card-title" style="color:var(--teal)">🕸️ Graph Algorithms</div>
+          <div class="cheat-row"><span class="cheat-algo">BFS</span><span class="cheat-tc"><span class="tc-worst">O(V + E)</span></span></div>
+          <div class="cheat-row"><span class="cheat-algo">DFS</span><span class="cheat-tc"><span class="tc-worst">O(V + E)</span></span></div>
+          <div class="cheat-row"><span class="cheat-algo">Dijkstra</span><span class="cheat-tc"><span class="tc-worst">O(V²) or O(E log V)</span></span></div>
+          <div class="cheat-row"><span class="cheat-algo">Topological Sort</span><span class="cheat-tc"><span class="tc-worst">O(V + E)</span></span></div>
+        </div>
+        <div class="cheat-card">
+          <div class="cheat-card-title" style="color:var(--accent2)">📚 Stack / Queue / LL</div>
+          <div class="cheat-row"><span class="cheat-algo">Stack Push/Pop</span><span class="cheat-tc"><span class="tc-best">O(1)</span></span></div>
+          <div class="cheat-row"><span class="cheat-algo">Queue Enqueue/Dequeue</span><span class="cheat-tc"><span class="tc-best">O(1)</span></span></div>
+          <div class="cheat-row"><span class="cheat-algo">LL Insert (head)</span><span class="cheat-tc"><span class="tc-best">O(1)</span></span></div>
+          <div class="cheat-row"><span class="cheat-algo">LL Find Middle</span><span class="cheat-tc"><span class="tc-worst">O(n)</span></span></div>
+          <div class="cheat-row"><span class="cheat-algo">Tower of Hanoi</span><span class="cheat-tc"><span class="tc-worst">O(2ⁿ)</span></span></div>
+          <div class="cheat-row"><span class="cheat-algo">Infix → Postfix</span><span class="cheat-tc"><span class="tc-worst">O(n)</span></span></div>
+        </div>
+      </div>
+      <div class="section-title" style="margin-top:2rem;">AVL Rotation Quick Reference</div>
+      <div class="grid-2">
+        <div class="info-box"><strong>LL Rotation (Right Rotation):</strong> Inserted in left subtree of left child. Fix: rotate right at unbalanced node. New root = left child.</div>
+        <div class="info-box"><strong>RR Rotation (Left Rotation):</strong> Inserted in right subtree of right child. Fix: rotate left at unbalanced node. New root = right child.</div>
+        <div class="info-box"><strong>LR Rotation (Left-Right):</strong> Inserted in right subtree of left child. Fix: first rotate left at left child, then rotate right at unbalanced node.</div>
+        <div class="info-box"><strong>RL Rotation (Right-Left):</strong> Inserted in left subtree of right child. Fix: first rotate right at right child, then rotate left at unbalanced node.</div>
+      </div>
+      <div class="section-title" style="margin-top:1.5rem;">Stack Operator Precedence (Infix → Postfix)</div>
+      <div class="info-box">
+        <strong>Priority in stack:</strong> ^ (3) &gt; *, / (2) &gt; +, - (1) &gt; ( (0)<br><br>
+        Rule: Pop from stack while <strong>stack top precedence ≥ current operator precedence</strong> (except for ^ which is right-associative — pop only if strictly greater).
+        <br>Parentheses: push <strong>(</strong> directly; on <strong>)</strong>, pop until matching <strong>(</strong>.
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+const topics = {
+  quicksort: {
+    title: "Quick Sort",
+    marks: "8-10 Marks",
+    type: "Divide & Conquer",
+    color: "badge-amber",
+    desc: "Quick Sort picks a <strong>pivot</strong> element, partitions the array so all elements less than pivot are to its left and all greater are to its right, then recursively sorts each partition. The key is the PARTITION function.",
+    tabs: ["PARTITION","QUICKSORT","Complexity"],
+    codes: [
+`<span class="cm">// PARTITION — rearranges array around pivot</span>
+<span class="kw">FUNCTION</span> <span class="fn">PARTITION</span>(arr, low, high):
+    pivot <span class="op">←</span> arr[high]         <span class="cm">// last element as pivot</span>
+    i <span class="op">←</span> low <span class="op">-</span> <span class="num">1</span>              <span class="cm">// index of smaller element</span>
+    
+    <span class="kw">FOR</span> j <span class="op">←</span> low <span class="kw">TO</span> high <span class="op">-</span> <span class="num">1</span> <span class="kw">DO</span>
+        <span class="kw">IF</span> arr[j] <span class="op">≤</span> pivot <span class="kw">THEN</span>
+            i <span class="op">←</span> i <span class="op">+</span> <span class="num">1</span>
+            <span class="fn">SWAP</span>(arr[i], arr[j])
+        <span class="kw">END IF</span>
+    <span class="kw">END FOR</span>
+    
+    <span class="fn">SWAP</span>(arr[i <span class="op">+</span> <span class="num">1</span>], arr[high])  <span class="cm">// place pivot in correct position</span>
+    <span class="kw">RETURN</span> i <span class="op">+</span> <span class="num">1</span>               <span class="cm">// return pivot index</span>
+<span class="kw">END FUNCTION</span>`,
+`<span class="cm">// QUICKSORT — recursive divide and conquer</span>
+<span class="kw">FUNCTION</span> <span class="fn">QUICKSORT</span>(arr, low, high):
+    <span class="kw">IF</span> low <span class="op">&lt;</span> high <span class="kw">THEN</span>
+        pi <span class="op">←</span> <span class="fn">PARTITION</span>(arr, low, high)
+        <span class="cm">// Recursively sort elements before and after partition</span>
+        <span class="fn">QUICKSORT</span>(arr, low, pi <span class="op">-</span> <span class="num">1</span>)
+        <span class="fn">QUICKSORT</span>(arr, pi <span class="op">+</span> <span class="num">1</span>, high)
+    <span class="kw">END IF</span>
+<span class="kw">END FUNCTION</span>
+
+<span class="cm">// Initial call:</span>
+<span class="fn">QUICKSORT</span>(arr, <span class="num">0</span>, n<span class="op">-</span><span class="num">1</span>)`,
+`<span class="cm">// TIME COMPLEXITY ANALYSIS</span>
+<span class="cm">// Best Case:  O(n log n) — balanced partitions</span>
+<span class="cm">// Avg Case:   O(n log n) — random pivot</span>
+<span class="cm">// Worst Case: O(n²) — sorted/reverse sorted array</span>
+<span class="cm">//             (pivot always smallest or largest)</span>
+<span class="cm">// Space:      O(log n) avg recursive stack</span>
+<span class="cm">//             O(n) worst case</span>
+
+<span class="cm">// Worst case recurrence:</span>
+<span class="cm">// T(n) = T(n-1) + O(n)</span>
+<span class="cm">// → T(n) = O(n²)</span>
+
+<span class="cm">// Best case recurrence:</span>
+<span class="cm">// T(n) = 2T(n/2) + O(n)</span>
+<span class="cm">// → T(n) = O(n log n)  [by Master Theorem]</span>`
+    ],
+    tips: ["Always write PARTITION first before QUICKSORT in exam answers.","Worst case O(n²) happens when array is already sorted and we always pick first/last as pivot.","Quick Sort is NOT stable — equal elements may change order.","Average case is O(n log n) which makes it practically fast despite O(n²) worst case."]
+  },
+
+  mergesort: {
+    title: "Merge Sort",
+    marks: "8-10 Marks",
+    type: "Divide & Conquer",
+    color: "badge-amber",
+    desc: "Merge Sort divides the array into two halves, recursively sorts each half, then <strong>merges</strong> the two sorted halves. It guarantees O(n log n) in ALL cases. The MERGE function is the key helper.",
+    tabs: ["MERGE","MERGESORT","Complexity"],
+    codes: [
+`<span class="cm">// MERGE — merges two sorted sub-arrays</span>
+<span class="kw">FUNCTION</span> <span class="fn">MERGE</span>(arr, left, mid, right):
+    n1 <span class="op">←</span> mid <span class="op">-</span> left <span class="op">+</span> <span class="num">1</span>
+    n2 <span class="op">←</span> right <span class="op">-</span> mid
+    
+    <span class="cm">// Create temp arrays L[0..n1-1] and R[0..n2-1]</span>
+    <span class="kw">FOR</span> i <span class="op">←</span> <span class="num">0</span> <span class="kw">TO</span> n1<span class="op">-</span><span class="num">1</span>: L[i] <span class="op">←</span> arr[left <span class="op">+</span> i]
+    <span class="kw">FOR</span> j <span class="op">←</span> <span class="num">0</span> <span class="kw">TO</span> n2<span class="op">-</span><span class="num">1</span>: R[j] <span class="op">←</span> arr[mid <span class="op">+</span> <span class="num">1</span> <span class="op">+</span> j]
+    
+    i <span class="op">←</span> <span class="num">0</span>, j <span class="op">←</span> <span class="num">0</span>, k <span class="op">←</span> left
+    
+    <span class="kw">WHILE</span> i <span class="op">&lt;</span> n1 <span class="kw">AND</span> j <span class="op">&lt;</span> n2 <span class="kw">DO</span>
+        <span class="kw">IF</span> L[i] <span class="op">≤</span> R[j] <span class="kw">THEN</span>
+            arr[k] <span class="op">←</span> L[i]; i <span class="op">←</span> i<span class="op">+</span><span class="num">1</span>
+        <span class="kw">ELSE</span>
+            arr[k] <span class="op">←</span> R[j]; j <span class="op">←</span> j<span class="op">+</span><span class="num">1</span>
+        <span class="kw">END IF</span>
+        k <span class="op">←</span> k<span class="op">+</span><span class="num">1</span>
+    <span class="kw">END WHILE</span>
+    
+    <span class="cm">// Copy remaining elements</span>
+    <span class="kw">WHILE</span> i <span class="op">&lt;</span> n1 <span class="kw">DO</span>: arr[k] <span class="op">←</span> L[i]; i<span class="op">++</span>; k<span class="op">++</span>
+    <span class="kw">WHILE</span> j <span class="op">&lt;</span> n2 <span class="kw">DO</span>: arr[k] <span class="op">←</span> R[j]; j<span class="op">++</span>; k<span class="op">++</span>
+<span class="kw">END FUNCTION</span>`,
+`<span class="cm">// MERGESORT — recursive divide and conquer</span>
+<span class="kw">FUNCTION</span> <span class="fn">MERGESORT</span>(arr, left, right):
+    <span class="kw">IF</span> left <span class="op">&lt;</span> right <span class="kw">THEN</span>
+        mid <span class="op">←</span> (left <span class="op">+</span> right) <span class="op">/</span> <span class="num">2</span>   <span class="cm">// integer division</span>
+        
+        <span class="fn">MERGESORT</span>(arr, left, mid)       <span class="cm">// sort left half</span>
+        <span class="fn">MERGESORT</span>(arr, mid<span class="op">+</span><span class="num">1</span>, right)   <span class="cm">// sort right half</span>
+        <span class="fn">MERGE</span>(arr, left, mid, right)    <span class="cm">// merge both halves</span>
+    <span class="kw">END IF</span>
+<span class="kw">END FUNCTION</span>
+
+<span class="cm">// Initial call:</span>
+<span class="fn">MERGESORT</span>(arr, <span class="num">0</span>, n<span class="op">-</span><span class="num">1</span>)`,
+`<span class="cm">// TIME COMPLEXITY ANALYSIS</span>
+<span class="cm">// Best Case:  O(n log n) — always divides equally</span>
+<span class="cm">// Avg Case:   O(n log n)</span>
+<span class="cm">// Worst Case: O(n log n) — CONSISTENT</span>
+<span class="cm">// Space:      O(n) — needs auxiliary array</span>
+
+<span class="cm">// Recurrence relation:</span>
+<span class="cm">// T(n) = 2T(n/2) + O(n)</span>
+<span class="cm">// By Master Theorem (Case 2):</span>
+<span class="cm">// a=2, b=2, f(n)=n → n^log₂(2) = n¹ = n</span>
+<span class="cm">// Since f(n) = Θ(n^log_b a), T(n) = O(n log n)</span>
+
+<span class="cm">// Merge Sort IS stable — equal elements retain order.</span>
+<span class="cm">// Preferred for Linked Lists (no random access needed)</span>`
+    ],
+    tips: ["Merge Sort is STABLE — great exam point. Quick Sort is NOT.","Merge Sort always O(n log n) — even on sorted arrays. Best when consistency matters.","Needs O(n) extra space — a disadvantage over Quick Sort.","Write the recurrence T(n) = 2T(n/2) + n and solve using Master Theorem for full marks."]
+  },
+
+  traversals: {
+    title: "Tree Traversals",
+    marks: "5-7 Marks",
+    type: "Trees",
+    color: "badge-green",
+    desc: "Three fundamental ways to visit all nodes of a binary tree. Remember: <strong>Pre = Root first, In = Root middle, Post = Root last</strong>.",
+    tabs: ["Pre-Order","In-Order","Post-Order"],
+    codes: [
+`<span class="cm">// PRE-ORDER: Root → Left → Right</span>
+<span class="kw">FUNCTION</span> <span class="fn">PREORDER</span>(node):
+    <span class="kw">IF</span> node <span class="op">≠</span> NULL <span class="kw">THEN</span>
+        <span class="fn">PRINT</span>(node.data)       <span class="cm">// Visit ROOT first</span>
+        <span class="fn">PREORDER</span>(node.left)   <span class="cm">// Traverse LEFT subtree</span>
+        <span class="fn">PREORDER</span>(node.right)  <span class="cm">// Traverse RIGHT subtree</span>
+    <span class="kw">END IF</span>
+<span class="kw">END FUNCTION</span>
+
+<span class="cm">// Use case: Copy a tree, Prefix expressions</span>
+<span class="cm">// Time Complexity: O(n)</span>`,
+`<span class="cm">// IN-ORDER: Left → Root → Right</span>
+<span class="kw">FUNCTION</span> <span class="fn">INORDER</span>(node):
+    <span class="kw">IF</span> node <span class="op">≠</span> NULL <span class="kw">THEN</span>
+        <span class="fn">INORDER</span>(node.left)    <span class="cm">// Traverse LEFT subtree</span>
+        <span class="fn">PRINT</span>(node.data)      <span class="cm">// Visit ROOT middle</span>
+        <span class="fn">INORDER</span>(node.right)   <span class="cm">// Traverse RIGHT subtree</span>
+    <span class="kw">END IF</span>
+<span class="kw">END FUNCTION</span>
+
+<span class="cm">// Use case: BST → gives SORTED sequence</span>
+<span class="cm">// Time Complexity: O(n)</span>`,
+`<span class="cm">// POST-ORDER: Left → Right → Root</span>
+<span class="kw">FUNCTION</span> <span class="fn">POSTORDER</span>(node):
+    <span class="kw">IF</span> node <span class="op">≠</span> NULL <span class="kw">THEN</span>
+        <span class="fn">POSTORDER</span>(node.left)   <span class="cm">// Traverse LEFT subtree</span>
+        <span class="fn">POSTORDER</span>(node.right)  <span class="cm">// Traverse RIGHT subtree</span>
+        <span class="fn">PRINT</span>(node.data)       <span class="cm">// Visit ROOT last</span>
+    <span class="kw">END IF</span>
+<span class="kw">END FUNCTION</span>
+
+<span class="cm">// Use case: Delete a tree, Postfix expressions</span>
+<span class="cm">// Time Complexity: O(n)</span>`
+    ],
+    tips: ["Memory trick: Pre = ROOT is Pre(first), In = ROOT is In(middle), Post = ROOT is Post(last).","In-order traversal of a BST always gives elements in sorted ascending order — exam favourite!","All three have O(n) time complexity since every node is visited exactly once.","Post-order is used in tree deletion because children are processed before parent."]
+  },
+
+  avl: {
+    title: "AVL Tree Rotations",
+    marks: "8-10 Marks",
+    type: "Trees",
+    color: "badge-green",
+    desc: "AVL trees are self-balancing BSTs. After each insertion, if <strong>Balance Factor = |height(left) - height(right)| > 1</strong>, perform the appropriate rotation.",
+    tabs: ["LL Rotation","RR Rotation","LR Rotation","RL Rotation"],
+    codes: [
+`<span class="cm">// LL ROTATION (Right Rotation)</span>
+<span class="cm">// Case: Node inserted in LEFT subtree of LEFT child</span>
+<span class="kw">FUNCTION</span> <span class="fn">LL_ROTATE</span>(z):           <span class="cm">// z = unbalanced node</span>
+    y <span class="op">←</span> z.left                     <span class="cm">// y = z's left child</span>
+    T2 <span class="op">←</span> y.right                   <span class="cm">// T2 = y's right subtree</span>
+    
+    <span class="cm">// Perform rotation</span>
+    y.right <span class="op">←</span> z                    <span class="cm">// y becomes new root</span>
+    z.left  <span class="op">←</span> T2                   <span class="cm">// T2 moves to z's left</span>
+    
+    <span class="cm">// Update heights</span>
+    z.height <span class="op">←</span> <span class="fn">MAX</span>(h(z.left), h(z.right)) <span class="op">+</span> <span class="num">1</span>
+    y.height <span class="op">←</span> <span class="fn">MAX</span>(h(y.left), h(y.right)) <span class="op">+</span> <span class="num">1</span>
+    
+    <span class="kw">RETURN</span> y                        <span class="cm">// y is now the new root</span>
+<span class="kw">END FUNCTION</span>
+
+<span class="cm">// Before: z(unbalanced) → y(left) → x(left)</span>
+<span class="cm">// After:  y is root, z is y's right child</span>`,
+`<span class="cm">// RR ROTATION (Left Rotation)</span>
+<span class="cm">// Case: Node inserted in RIGHT subtree of RIGHT child</span>
+<span class="kw">FUNCTION</span> <span class="fn">RR_ROTATE</span>(z):           <span class="cm">// z = unbalanced node</span>
+    y <span class="op">←</span> z.right                    <span class="cm">// y = z's right child</span>
+    T2 <span class="op">←</span> y.left                    <span class="cm">// T2 = y's left subtree</span>
+    
+    <span class="cm">// Perform rotation</span>
+    y.left  <span class="op">←</span> z                    <span class="cm">// y becomes new root</span>
+    z.right <span class="op">←</span> T2                   <span class="cm">// T2 moves to z's right</span>
+    
+    <span class="cm">// Update heights</span>
+    z.height <span class="op">←</span> <span class="fn">MAX</span>(h(z.left), h(z.right)) <span class="op">+</span> <span class="num">1</span>
+    y.height <span class="op">←</span> <span class="fn">MAX</span>(h(y.left), h(y.right)) <span class="op">+</span> <span class="num">1</span>
+    
+    <span class="kw">RETURN</span> y                        <span class="cm">// y is now the new root</span>
+<span class="kw">END FUNCTION</span>
+
+<span class="cm">// Before: z(unbalanced) → y(right) → x(right)</span>
+<span class="cm">// After:  y is root, z is y's left child</span>`,
+`<span class="cm">// LR ROTATION (Left-Right Double Rotation)</span>
+<span class="cm">// Case: Node inserted in RIGHT subtree of LEFT child</span>
+<span class="kw">FUNCTION</span> <span class="fn">LR_ROTATE</span>(z):
+    <span class="cm">// Step 1: Left rotate z's left child</span>
+    z.left <span class="op">←</span> <span class="fn">RR_ROTATE</span>(z.left)
+    
+    <span class="cm">// Step 2: Right rotate z</span>
+    <span class="kw">RETURN</span> <span class="fn">LL_ROTATE</span>(z)
+<span class="kw">END FUNCTION</span>
+
+<span class="cm">// Pattern: z → y(left) → x(right of y)</span>
+<span class="cm">// Step 1: RR_ROTATE(y) → makes it LL case</span>
+<span class="cm">// Step 2: LL_ROTATE(z) → final balance</span>`,
+`<span class="cm">// RL ROTATION (Right-Left Double Rotation)</span>
+<span class="cm">// Case: Node inserted in LEFT subtree of RIGHT child</span>
+<span class="kw">FUNCTION</span> <span class="fn">RL_ROTATE</span>(z):
+    <span class="cm">// Step 1: Right rotate z's right child</span>
+    z.right <span class="op">←</span> <span class="fn">LL_ROTATE</span>(z.right)
+    
+    <span class="cm">// Step 2: Left rotate z</span>
+    <span class="kw">RETURN</span> <span class="fn">RR_ROTATE</span>(z)
+<span class="kw">END FUNCTION</span>
+
+<span class="cm">// Pattern: z → y(right) → x(left of y)</span>
+<span class="cm">// Step 1: LL_ROTATE(y) → makes it RR case</span>
+<span class="cm">// Step 2: RR_ROTATE(z) → final balance</span>`
+    ],
+    tips: ["Balance Factor (BF) = height(left subtree) - height(right subtree). AVL requires |BF| ≤ 1 for all nodes.","LL and RR are single rotations. LR and RL are double rotations (2 steps each).","To identify the case: trace path from inserted node up to the unbalanced ancestor.","LR = first RR then LL. RL = first LL then RR. (Double rotations reuse single rotations.)","Always update heights AFTER rotation and RETURN the new root."]
+  },
+
+  bfs: {
+    title: "Breadth-First Search (BFS)",
+    marks: "5-7 Marks",
+    type: "Graphs",
+    color: "badge-teal",
+    desc: "BFS explores a graph <strong>level by level</strong> — visits all neighbors at current depth before going deeper. Uses a <strong>Queue</strong>. Good for finding shortest path in unweighted graphs.",
+    tabs: ["BFS Pseudocode"],
+    codes: [
+`<span class="cm">// BFS — Level-order graph traversal using a Queue</span>
+<span class="kw">FUNCTION</span> <span class="fn">BFS</span>(graph, startVertex):
+    <span class="cm">// Initialize visited array to FALSE for all vertices</span>
+    visited[<span class="num">0..V-1</span>] <span class="op">←</span> FALSE
+    
+    queue <span class="op">←</span> <span class="fn">EMPTY_QUEUE</span>()
+    
+    <span class="cm">// Mark start vertex and enqueue it</span>
+    visited[startVertex] <span class="op">←</span> TRUE
+    <span class="fn">ENQUEUE</span>(queue, startVertex)
+    
+    <span class="kw">WHILE</span> queue <span class="kw">IS NOT EMPTY</span> <span class="kw">DO</span>
+        vertex <span class="op">←</span> <span class="fn">DEQUEUE</span>(queue)
+        <span class="fn">PRINT</span>(vertex)              <span class="cm">// Process current vertex</span>
+        
+        <span class="cm">// Visit all adjacent (neighbor) vertices</span>
+        <span class="kw">FOR EACH</span> neighbor <span class="kw">IN</span> graph.adj[vertex] <span class="kw">DO</span>
+            <span class="kw">IF</span> visited[neighbor] <span class="op">=</span> FALSE <span class="kw">THEN</span>
+                visited[neighbor] <span class="op">←</span> TRUE
+                <span class="fn">ENQUEUE</span>(queue, neighbor)
+            <span class="kw">END IF</span>
+        <span class="kw">END FOR</span>
+    <span class="kw">END WHILE</span>
+<span class="kw">END FUNCTION</span>
+
+<span class="cm">// Time:  O(V + E) — V vertices, E edges</span>
+<span class="cm">// Space: O(V) — visited array + queue</span>`
+    ],
+    tips: ["BFS uses a QUEUE (FIFO). DFS uses a STACK (LIFO) or recursion.","Always mark node as visited BEFORE enqueuing it, not after dequeuing.","BFS finds the shortest path in UNWEIGHTED graphs. For weighted, use Dijkstra.","Time complexity O(V+E): V for visiting each vertex once, E for checking each edge once.","Disconnected graph: need to call BFS for every unvisited vertex."]
+  },
+
+  dfs: {
+    title: "Depth-First Search (DFS)",
+    marks: "5-7 Marks",
+    type: "Graphs",
+    color: "badge-teal",
+    desc: "DFS explores as far as possible along each branch before backtracking. Can be implemented <strong>recursively</strong> or using a stack.",
+    tabs: ["DFS Recursive","DFS Iterative"],
+    codes: [
+`<span class="cm">// DFS RECURSIVE — go as deep as possible first</span>
+<span class="kw">FUNCTION</span> <span class="fn">DFS</span>(graph, vertex, visited):
+    visited[vertex] <span class="op">←</span> TRUE
+    <span class="fn">PRINT</span>(vertex)                      <span class="cm">// Process vertex</span>
+    
+    <span class="kw">FOR EACH</span> neighbor <span class="kw">IN</span> graph.adj[vertex] <span class="kw">DO</span>
+        <span class="kw">IF</span> visited[neighbor] <span class="op">=</span> FALSE <span class="kw">THEN</span>
+            <span class="fn">DFS</span>(graph, neighbor, visited)  <span class="cm">// Recurse deeper</span>
+        <span class="kw">END IF</span>
+    <span class="kw">END FOR</span>
+<span class="kw">END FUNCTION</span>
+
+<span class="cm">// Wrapper to handle disconnected graphs:</span>
+<span class="kw">FUNCTION</span> <span class="fn">DFS_FULL</span>(graph):
+    visited[<span class="num">0..V-1</span>] <span class="op">←</span> FALSE
+    <span class="kw">FOR</span> v <span class="op">←</span> <span class="num">0</span> <span class="kw">TO</span> V<span class="op">-</span><span class="num">1</span> <span class="kw">DO</span>
+        <span class="kw">IF</span> visited[v] <span class="op">=</span> FALSE <span class="kw">THEN</span>
+            <span class="fn">DFS</span>(graph, v, visited)
+        <span class="kw">END IF</span>
+    <span class="kw">END FOR</span>
+<span class="kw">END FUNCTION</span>
+
+<span class="cm">// Time: O(V + E), Space: O(V) recursion stack</span>`,
+`<span class="cm">// DFS ITERATIVE — using explicit stack</span>
+<span class="kw">FUNCTION</span> <span class="fn">DFS_ITERATIVE</span>(graph, startVertex):
+    visited[<span class="num">0..V-1</span>] <span class="op">←</span> FALSE
+    stack <span class="op">←</span> <span class="fn">EMPTY_STACK</span>()
+    
+    <span class="fn">PUSH</span>(stack, startVertex)
+    
+    <span class="kw">WHILE</span> stack <span class="kw">IS NOT EMPTY</span> <span class="kw">DO</span>
+        vertex <span class="op">←</span> <span class="fn">POP</span>(stack)
+        
+        <span class="kw">IF</span> visited[vertex] <span class="op">=</span> FALSE <span class="kw">THEN</span>
+            visited[vertex] <span class="op">←</span> TRUE
+            <span class="fn">PRINT</span>(vertex)
+            
+            <span class="kw">FOR EACH</span> neighbor <span class="kw">IN</span> graph.adj[vertex] <span class="kw">DO</span>
+                <span class="kw">IF</span> visited[neighbor] <span class="op">=</span> FALSE <span class="kw">THEN</span>
+                    <span class="fn">PUSH</span>(stack, neighbor)
+                <span class="kw">END IF</span>
+            <span class="kw">END FOR</span>
+        <span class="kw">END IF</span>
+    <span class="kw">END WHILE</span>
+<span class="kw">END FUNCTION</span>
+
+<span class="cm">// Time: O(V + E)</span>`
+    ],
+    tips: ["DFS = STACK (recursive call stack or explicit stack). BFS = QUEUE.","DFS is used for: cycle detection, topological sort, finding connected components.","Recursive DFS is cleaner to write in exams. Iterative may be asked separately.","Both BFS and DFS have the same time complexity O(V+E)."]
+  },
+
+  dijkstra: {
+    title: "Dijkstra's Shortest Path",
+    marks: "8-10 Marks",
+    type: "Graphs",
+    color: "badge-teal",
+    desc: "Dijkstra's algorithm finds the <strong>shortest path from a source vertex to all other vertices</strong> in a weighted graph with non-negative weights. Uses a greedy approach.",
+    tabs: ["Dijkstra Pseudocode","Complexity"],
+    codes: [
+`<span class="cm">// DIJKSTRA'S ALGORITHM — Shortest path from source</span>
+<span class="kw">FUNCTION</span> <span class="fn">DIJKSTRA</span>(graph, src):
+    n <span class="op">←</span> number of vertices
+    
+    <span class="cm">// Initialize distances as INFINITY, source as 0</span>
+    dist[<span class="num">0..n-1</span>] <span class="op">←</span> ∞
+    dist[src] <span class="op">←</span> <span class="num">0</span>
+    
+    <span class="cm">// visited[i] = TRUE if vertex i included in shortest path tree</span>
+    visited[<span class="num">0..n-1</span>] <span class="op">←</span> FALSE
+    
+    <span class="cm">// Process n vertices</span>
+    <span class="kw">FOR</span> count <span class="op">←</span> <span class="num">0</span> <span class="kw">TO</span> n<span class="op">-</span><span class="num">1</span> <span class="kw">DO</span>
+        <span class="cm">// Pick vertex with minimum distance not yet visited</span>
+        u <span class="op">←</span> <span class="fn">MIN_DISTANCE</span>(dist, visited)
+        visited[u] <span class="op">←</span> TRUE
+        
+        <span class="cm">// Update distances of adjacent vertices</span>
+        <span class="kw">FOR EACH</span> vertex v <span class="kw">ADJACENT TO</span> u <span class="kw">DO</span>
+            <span class="kw">IF</span> visited[v] <span class="op">=</span> FALSE <span class="kw">AND</span>
+               graph[u][v] <span class="op">≠</span> <span class="num">0</span> <span class="kw">AND</span>
+               dist[u] <span class="op">+</span> graph[u][v] <span class="op">&lt;</span> dist[v] <span class="kw">THEN</span>
+                dist[v] <span class="op">←</span> dist[u] <span class="op">+</span> graph[u][v]
+            <span class="kw">END IF</span>
+        <span class="kw">END FOR</span>
+    <span class="kw">END FOR</span>
+    
+    <span class="fn">PRINT_DISTANCES</span>(dist)
+<span class="kw">END FUNCTION</span>
+
+<span class="cm">// Helper: find vertex with minimum dist not yet visited</span>
+<span class="kw">FUNCTION</span> <span class="fn">MIN_DISTANCE</span>(dist, visited):
+    min <span class="op">←</span> ∞, minIndex <span class="op">←</span> <span class="op">-</span><span class="num">1</span>
+    <span class="kw">FOR</span> v <span class="op">←</span> <span class="num">0</span> <span class="kw">TO</span> n<span class="op">-</span><span class="num">1</span> <span class="kw">DO</span>
+        <span class="kw">IF</span> visited[v] <span class="op">=</span> FALSE <span class="kw">AND</span> dist[v] <span class="op">≤</span> min <span class="kw">THEN</span>
+            min <span class="op">←</span> dist[v]; minIndex <span class="op">←</span> v
+        <span class="kw">END IF</span>
+    <span class="kw">END FOR</span>
+    <span class="kw">RETURN</span> minIndex
+<span class="kw">END FUNCTION</span>`,
+`<span class="cm">// TIME COMPLEXITY</span>
+<span class="cm">// With adjacency matrix: O(V²)</span>
+<span class="cm">// With min-heap + adjacency list: O(E log V)</span>
+
+<span class="cm">// STEP-BY-STEP (exam walkthrough):</span>
+<span class="cm">// 1. Set dist[src]=0, all others=∞</span>
+<span class="cm">// 2. Pick unvisited vertex u with min dist</span>
+<span class="cm">// 3. Mark u as visited</span>
+<span class="cm">// 4. For each neighbor v of u:</span>
+<span class="cm">//    if dist[u] + weight(u,v) < dist[v]</span>
+<span class="cm">//       update dist[v]</span>
+<span class="cm">// 5. Repeat until all vertices visited</span>
+
+<span class="cm">// IMPORTANT LIMITATIONS:</span>
+<span class="cm">// ✗ Does NOT work with NEGATIVE weight edges</span>
+<span class="cm">// ✓ Works on directed AND undirected graphs</span>
+<span class="cm">// ✓ Gives shortest path from ONE source to ALL vertices</span>`
+    ],
+    tips: ["Dijkstra FAILS with negative edge weights. Use Bellman-Ford instead.","Always initialize dist[src] = 0 and all others = ∞ (infinity).","In each iteration: pick the unvisited vertex with minimum distance (greedy choice).","For exam tables: track dist[] array after each iteration to show step-by-step working.","Time O(V²) with adjacency matrix — mention this clearly in complexity analysis."]
+  },
+
+  topo: {
+    title: "Topological Sort",
+    marks: "5-7 Marks",
+    type: "Graphs",
+    color: "badge-teal",
+    desc: "Topological sort orders vertices of a <strong>Directed Acyclic Graph (DAG)</strong> such that for every directed edge u → v, vertex u comes before v. Used in task scheduling.",
+    tabs: ["Using DFS (Stack)","Using Kahn's (BFS)"],
+    codes: [
+`<span class="cm">// TOPOLOGICAL SORT using DFS + Stack</span>
+<span class="kw">FUNCTION</span> <span class="fn">TOPO_DFS</span>(v, visited, stack):
+    visited[v] <span class="op">←</span> TRUE
+    
+    <span class="kw">FOR EACH</span> neighbor u <span class="kw">IN</span> graph.adj[v] <span class="kw">DO</span>
+        <span class="kw">IF</span> visited[u] <span class="op">=</span> FALSE <span class="kw">THEN</span>
+            <span class="fn">TOPO_DFS</span>(u, visited, stack)
+        <span class="kw">END IF</span>
+    <span class="kw">END FOR</span>
+    
+    <span class="fn">PUSH</span>(stack, v)  <span class="cm">// Push AFTER all descendants</span>
+<span class="kw">END FUNCTION</span>
+
+<span class="kw">FUNCTION</span> <span class="fn">TOPOLOGICAL_SORT</span>(graph):
+    visited[<span class="num">0..V-1</span>] <span class="op">←</span> FALSE
+    stack <span class="op">←</span> <span class="fn">EMPTY_STACK</span>()
+    
+    <span class="kw">FOR</span> v <span class="op">←</span> <span class="num">0</span> <span class="kw">TO</span> V<span class="op">-</span><span class="num">1</span> <span class="kw">DO</span>
+        <span class="kw">IF</span> visited[v] <span class="op">=</span> FALSE <span class="kw">THEN</span>
+            <span class="fn">TOPO_DFS</span>(v, visited, stack)
+        <span class="kw">END IF</span>
+    <span class="kw">END FOR</span>
+    
+    <span class="kw">WHILE</span> stack <span class="kw">IS NOT EMPTY</span> <span class="kw">DO</span>
+        <span class="fn">PRINT</span>(<span class="fn">POP</span>(stack))
+    <span class="kw">END WHILE</span>
+<span class="kw">END FUNCTION</span>
+
+<span class="cm">// Time: O(V + E)</span>`,
+`<span class="cm">// KAHN'S ALGORITHM (BFS-based Topological Sort)</span>
+<span class="kw">FUNCTION</span> <span class="fn">KAHNS_TOPO</span>(graph):
+    <span class="cm">// Calculate in-degree for each vertex</span>
+    inDegree[<span class="num">0..V-1</span>] <span class="op">←</span> <span class="num">0</span>
+    <span class="kw">FOR EACH</span> edge (u, v) <span class="kw">DO</span>: inDegree[v] <span class="op">←</span> inDegree[v] <span class="op">+</span> <span class="num">1</span>
+    
+    queue <span class="op">←</span> <span class="fn">EMPTY_QUEUE</span>()
+    
+    <span class="cm">// Enqueue all vertices with in-degree 0</span>
+    <span class="kw">FOR</span> v <span class="op">←</span> <span class="num">0</span> <span class="kw">TO</span> V<span class="op">-</span><span class="num">1</span> <span class="kw">DO</span>
+        <span class="kw">IF</span> inDegree[v] <span class="op">=</span> <span class="num">0</span> <span class="kw">THEN</span>: <span class="fn">ENQUEUE</span>(queue, v)
+    <span class="kw">END FOR</span>
+    
+    count <span class="op">←</span> <span class="num">0</span>
+    <span class="kw">WHILE</span> queue <span class="kw">IS NOT EMPTY</span> <span class="kw">DO</span>
+        u <span class="op">←</span> <span class="fn">DEQUEUE</span>(queue)
+        <span class="fn">PRINT</span>(u)
+        count <span class="op">←</span> count <span class="op">+</span> <span class="num">1</span>
+        
+        <span class="kw">FOR EACH</span> neighbor v <span class="kw">OF</span> u <span class="kw">DO</span>
+            inDegree[v] <span class="op">←</span> inDegree[v] <span class="op">-</span> <span class="num">1</span>
+            <span class="kw">IF</span> inDegree[v] <span class="op">=</span> <span class="num">0</span> <span class="kw">THEN</span>: <span class="fn">ENQUEUE</span>(queue, v)
+        <span class="kw">END FOR</span>
+    <span class="kw">END WHILE</span>
+    
+    <span class="kw">IF</span> count <span class="op">≠</span> V <span class="kw">THEN</span>: <span class="fn">PRINT</span>(<span class="str">"Cycle detected! Not a DAG"</span>)
+<span class="kw">END FUNCTION</span>`
+    ],
+    tips: ["Topological sort ONLY works on DAGs (Directed Acyclic Graphs).","Two methods: DFS+Stack (push vertex after all neighbors done) or Kahn's BFS (use in-degrees).","If Kahn's algorithm processes fewer than V vertices, the graph has a cycle.","Output is NOT unique — multiple valid topological orderings may exist."]
+  },
+
+  stack: {
+    title: "Stack — Push & Pop",
+    marks: "5-7 Marks",
+    type: "Stack",
+    color: "badge-purple",
+    desc: "A stack follows <strong>LIFO (Last In First Out)</strong>. Implemented using arrays with a <code>top</code> pointer. Push adds to top, Pop removes from top.",
+    tabs: ["PUSH","POP"],
+    codes: [
+`<span class="cm">// STACK using Array — PUSH operation</span>
+<span class="kw">CONST</span> MAX_SIZE <span class="op">=</span> <span class="num">100</span>
+stack[MAX_SIZE]
+top <span class="op">←</span> <span class="op">-</span><span class="num">1</span>                      <span class="cm">// -1 means stack is empty</span>
+
+<span class="kw">FUNCTION</span> <span class="fn">PUSH</span>(item):
+    <span class="kw">IF</span> top <span class="op">=</span> MAX_SIZE <span class="op">-</span> <span class="num">1</span> <span class="kw">THEN</span>
+        <span class="fn">PRINT</span>(<span class="str">"Stack Overflow! Stack is full"</span>)
+        <span class="kw">RETURN</span>
+    <span class="kw">END IF</span>
+    
+    top <span class="op">←</span> top <span class="op">+</span> <span class="num">1</span>             <span class="cm">// Increment top</span>
+    stack[top] <span class="op">←</span> item          <span class="cm">// Place item at new top</span>
+    <span class="fn">PRINT</span>(<span class="str">"Pushed:"</span>, item)
+<span class="kw">END FUNCTION</span>
+
+<span class="cm">// Time: O(1), Space: O(1)</span>`,
+`<span class="cm">// STACK using Array — POP operation</span>
+<span class="kw">FUNCTION</span> <span class="fn">POP</span>():
+    <span class="kw">IF</span> top <span class="op">=</span> <span class="op">-</span><span class="num">1</span> <span class="kw">THEN</span>
+        <span class="fn">PRINT</span>(<span class="str">"Stack Underflow! Stack is empty"</span>)
+        <span class="kw">RETURN</span> NULL
+    <span class="kw">END IF</span>
+    
+    item <span class="op">←</span> stack[top]          <span class="cm">// Get top element</span>
+    top <span class="op">←</span> top <span class="op">-</span> <span class="num">1</span>             <span class="cm">// Decrement top</span>
+    <span class="kw">RETURN</span> item
+<span class="kw">END FUNCTION</span>
+
+<span class="kw">FUNCTION</span> <span class="fn">PEEK</span>():             <span class="cm">// View top without removing</span>
+    <span class="kw">IF</span> top <span class="op">=</span> <span class="op">-</span><span class="num">1</span> <span class="kw">THEN</span>: <span class="kw">RETURN</span> NULL
+    <span class="kw">RETURN</span> stack[top]
+<span class="kw">END FUNCTION</span>
+
+<span class="kw">FUNCTION</span> <span class="fn">IS_EMPTY</span>(): <span class="kw">RETURN</span> (top <span class="op">=</span> <span class="op">-</span><span class="num">1</span>)
+<span class="kw">FUNCTION</span> <span class="fn">IS_FULL</span>():  <span class="kw">RETURN</span> (top <span class="op">=</span> MAX_SIZE<span class="op">-</span><span class="num">1</span>)
+
+<span class="cm">// Time: O(1), Space: O(1)</span>`
+    ],
+    tips: ["Stack OVERFLOW = trying to push when full (top = MAX-1).","Stack UNDERFLOW = trying to pop when empty (top = -1).","Both push and pop are O(1) — constant time operations.","top = -1 indicates empty stack (initialize before use).","Stack applications: function calls, undo operations, expression evaluation, backtracking."]
+  },
+
+  queue: {
+    title: "Circular Queue",
+    marks: "5-7 Marks",
+    type: "Stack",
+    color: "badge-purple",
+    desc: "A Circular Queue connects the rear back to the front to <strong>reuse empty spaces</strong>. Uses front and rear pointers with modulo arithmetic. Solves the problem of wasted space in linear queue.",
+    tabs: ["ENQUEUE","DEQUEUE"],
+    codes: [
+`<span class="cm">// CIRCULAR QUEUE — ENQUEUE operation</span>
+<span class="kw">CONST</span> MAX <span class="op">=</span> <span class="num">5</span>
+queue[MAX]
+front <span class="op">←</span> <span class="op">-</span><span class="num">1</span>, rear <span class="op">←</span> <span class="op">-</span><span class="num">1</span>    <span class="cm">// both -1 means empty</span>
+
+<span class="kw">FUNCTION</span> <span class="fn">ENQUEUE</span>(item):
+    <span class="cm">// Check for full condition</span>
+    <span class="kw">IF</span> (rear <span class="op">+</span> <span class="num">1</span>) <span class="op">MOD</span> MAX <span class="op">=</span> front <span class="kw">THEN</span>
+        <span class="fn">PRINT</span>(<span class="str">"Queue is FULL (Overflow)"</span>)
+        <span class="kw">RETURN</span>
+    <span class="kw">END IF</span>
+    
+    <span class="kw">IF</span> front <span class="op">=</span> <span class="op">-</span><span class="num">1</span> <span class="kw">THEN</span>          <span class="cm">// First element</span>
+        front <span class="op">←</span> <span class="num">0</span>
+        rear <span class="op">←</span> <span class="num">0</span>
+    <span class="kw">ELSE</span>
+        rear <span class="op">←</span> (rear <span class="op">+</span> <span class="num">1</span>) <span class="op">MOD</span> MAX  <span class="cm">// Wrap around</span>
+    <span class="kw">END IF</span>
+    
+    queue[rear] <span class="op">←</span> item
+    <span class="fn">PRINT</span>(<span class="str">"Enqueued:"</span>, item)
+<span class="kw">END FUNCTION</span>
+
+<span class="cm">// Time: O(1)</span>`,
+`<span class="cm">// CIRCULAR QUEUE — DEQUEUE operation</span>
+<span class="kw">FUNCTION</span> <span class="fn">DEQUEUE</span>():
+    <span class="kw">IF</span> front <span class="op">=</span> <span class="op">-</span><span class="num">1</span> <span class="kw">THEN</span>
+        <span class="fn">PRINT</span>(<span class="str">"Queue is EMPTY (Underflow)"</span>)
+        <span class="kw">RETURN</span> NULL
+    <span class="kw">END IF</span>
+    
+    item <span class="op">←</span> queue[front]
+    
+    <span class="kw">IF</span> front <span class="op">=</span> rear <span class="kw">THEN</span>          <span class="cm">// Only one element left</span>
+        front <span class="op">←</span> <span class="op">-</span><span class="num">1</span>
+        rear  <span class="op">←</span> <span class="op">-</span><span class="num">1</span>               <span class="cm">// Reset to empty state</span>
+    <span class="kw">ELSE</span>
+        front <span class="op">←</span> (front <span class="op">+</span> <span class="num">1</span>) <span class="op">MOD</span> MAX  <span class="cm">// Wrap front around</span>
+    <span class="kw">END IF</span>
+    
+    <span class="kw">RETURN</span> item
+<span class="kw">END FUNCTION</span>
+
+<span class="cm">// Full condition:  (rear + 1) MOD MAX = front</span>
+<span class="cm">// Empty condition: front = -1</span>
+<span class="cm">// Time: O(1)</span>`
+    ],
+    tips: ["Key formula for circular queue: use MOD to wrap around → (rear+1) % MAX.","Full condition: (rear + 1) % MAX == front.","Empty condition: front == -1.","Circular queue can store MAX-1 elements (one slot wasted to distinguish full from empty).","Special case: when last element is dequeued, reset both front and rear to -1."]
+  },
+
+  infix: {
+    title: "Infix to Postfix",
+    marks: "8-10 Marks",
+    type: "Stack",
+    color: "badge-purple",
+    desc: "Convert <strong>A+B*C</strong> (infix) to <strong>ABC*+</strong> (postfix) using a stack. The key rule: pop from stack while stack-top has <strong>higher or equal precedence</strong> than the current operator.",
+    tabs: ["Pseudocode","Precedence Rules"],
+    codes: [
+`<span class="cm">// INFIX TO POSTFIX CONVERSION using Stack</span>
+<span class="kw">FUNCTION</span> <span class="fn">INFIX_TO_POSTFIX</span>(expression):
+    stack <span class="op">←</span> <span class="fn">EMPTY_STACK</span>()
+    result <span class="op">←</span> <span class="str">""</span>            <span class="cm">// output postfix string</span>
+    
+    <span class="kw">FOR EACH</span> token <span class="kw">IN</span> expression <span class="kw">DO</span>
+        
+        <span class="kw">CASE</span> token <span class="kw">IS</span>:
+        
+        <span class="cm">// Rule 1: Operand (letter/digit) → add to output</span>
+        <span class="kw">IF</span> token <span class="kw">IS OPERAND</span> <span class="kw">THEN</span>:
+            result <span class="op">←</span> result <span class="op">+</span> token
+        
+        <span class="cm">// Rule 2: '(' → push directly to stack</span>
+        <span class="kw">ELSE IF</span> token <span class="op">=</span> <span class="str">'('</span> <span class="kw">THEN</span>:
+            <span class="fn">PUSH</span>(stack, token)
+        
+        <span class="cm">// Rule 3: ')' → pop until matching '('</span>
+        <span class="kw">ELSE IF</span> token <span class="op">=</span> <span class="str">')'</span> <span class="kw">THEN</span>:
+            <span class="kw">WHILE</span> <span class="fn">PEEK</span>(stack) <span class="op">≠</span> <span class="str">'('</span> <span class="kw">DO</span>
+                result <span class="op">←</span> result <span class="op">+</span> <span class="fn">POP</span>(stack)
+            <span class="kw">END WHILE</span>
+            <span class="fn">POP</span>(stack)          <span class="cm">// discard '('</span>
+        
+        <span class="cm">// Rule 4: Operator → pop higher/equal precedence first</span>
+        <span class="kw">ELSE IF</span> token <span class="kw">IS OPERATOR</span> <span class="kw">THEN</span>:
+            <span class="kw">WHILE</span> stack <span class="kw">NOT EMPTY AND</span>
+                  <span class="fn">PREC</span>(<span class="fn">PEEK</span>(stack)) <span class="op">≥</span> <span class="fn">PREC</span>(token) <span class="kw">DO</span>
+                result <span class="op">←</span> result <span class="op">+</span> <span class="fn">POP</span>(stack)
+            <span class="kw">END WHILE</span>
+            <span class="fn">PUSH</span>(stack, token)
+        <span class="kw">END CASE</span>
+        
+    <span class="kw">END FOR</span>
+    
+    <span class="cm">// Pop all remaining operators</span>
+    <span class="kw">WHILE</span> stack <span class="kw">NOT EMPTY</span> <span class="kw">DO</span>
+        result <span class="op">←</span> result <span class="op">+</span> <span class="fn">POP</span>(stack)
+    <span class="kw">END WHILE</span>
+    
+    <span class="kw">RETURN</span> result
+<span class="kw">END FUNCTION</span>
+
+<span class="cm">// Time: O(n), Space: O(n)</span>`,
+`<span class="cm">// OPERATOR PRECEDENCE TABLE</span>
+<span class="cm">// Higher number = higher precedence</span>
+
+<span class="fn">PREC</span>(<span class="str">'('</span>) <span class="op">=</span> <span class="num">0</span>    <span class="cm">// lowest (never pop for operators)</span>
+<span class="fn">PREC</span>(<span class="str">'+'</span>) <span class="op">=</span> <span class="num">1</span>
+<span class="fn">PREC</span>(<span class="str">'-'</span>) <span class="op">=</span> <span class="num">1</span>
+<span class="fn">PREC</span>(<span class="str">'*'</span>) <span class="op">=</span> <span class="num">2</span>
+<span class="fn">PREC</span>(<span class="str">'/'</span>) <span class="op">=</span> <span class="num">2</span>
+<span class="fn">PREC</span>(<span class="str">'^'</span>) <span class="op">=</span> <span class="num">3</span>    <span class="cm">// highest; right-associative</span>
+
+<span class="cm">// EXAMPLE TRACE: A + B * C - D</span>
+<span class="cm">// Token | Stack     | Output</span>
+<span class="cm">//   A   |           | A</span>
+<span class="cm">//   +   | +         | A</span>
+<span class="cm">//   B   | +         | AB</span>
+<span class="cm">//   *   | + *       | AB</span>
+<span class="cm">//   C   | + *       | ABC</span>
+<span class="cm">//   -   | -         | ABC*+</span>
+<span class="cm">//   D   | -         | ABC*+D</span>
+<span class="cm">// end   |           | ABC*+D-</span>
+<span class="cm">// Result: ABC*+D-</span>`
+    ],
+    tips: ["4 rules: Operand→output, (→push, )→pop till (, Operator→pop ≥ precedence then push.","At the END of expression, pop ALL remaining operators from stack to output.","'(' has precedence 0 inside stack — it stops popping for other operators.","'^' is right-associative — for '^', pop only if stack top precedence is STRICTLY greater.","ALWAYS show step-by-step table (token | stack | output) for full marks."]
+  },
+
+  hanoi: {
+    title: "Tower of Hanoi",
+    marks: "8-10 Marks",
+    type: "Stack/Recursion",
+    color: "badge-purple",
+    desc: "Move n disks from source peg to destination peg using an auxiliary peg. Rules: only one disk at a time, never place larger disk on smaller. Classic <strong>recursive</strong> algorithm.",
+    tabs: ["Pseudocode","Complexity Analysis"],
+    codes: [
+`<span class="cm">// TOWER OF HANOI — Recursive Solution</span>
+<span class="kw">FUNCTION</span> <span class="fn">HANOI</span>(n, source, auxiliary, destination):
+    <span class="cm">// Base case: only one disk to move</span>
+    <span class="kw">IF</span> n <span class="op">=</span> <span class="num">1</span> <span class="kw">THEN</span>
+        <span class="fn">PRINT</span>(<span class="str">"Move disk 1 from"</span>, source, <span class="str">"to"</span>, destination)
+        <span class="kw">RETURN</span>
+    <span class="kw">END IF</span>
+    
+    <span class="cm">// Step 1: Move top (n-1) disks from source to auxiliary</span>
+    <span class="cm">//         (using destination as helper)</span>
+    <span class="fn">HANOI</span>(n<span class="op">-</span><span class="num">1</span>, source, destination, auxiliary)
+    
+    <span class="cm">// Step 2: Move the nth (largest) disk to destination</span>
+    <span class="fn">PRINT</span>(<span class="str">"Move disk"</span>, n, <span class="str">"from"</span>, source, <span class="str">"to"</span>, destination)
+    
+    <span class="cm">// Step 3: Move (n-1) disks from auxiliary to destination</span>
+    <span class="cm">//         (using source as helper)</span>
+    <span class="fn">HANOI</span>(n<span class="op">-</span><span class="num">1</span>, auxiliary, source, destination)
+<span class="kw">END FUNCTION</span>
+
+<span class="cm">// Initial call for n disks:</span>
+<span class="fn">HANOI</span>(n, <span class="str">'A'</span>, <span class="str">'B'</span>, <span class="str">'C'</span>)
+<span class="cm">// A=source, B=auxiliary, C=destination</span>
+
+<span class="cm">// For n=3 example (7 moves total):</span>
+<span class="cm">// Move disk 1: A → C</span>
+<span class="cm">// Move disk 2: A → B</span>
+<span class="cm">// Move disk 1: C → B</span>
+<span class="cm">// Move disk 3: A → C</span>
+<span class="cm">// Move disk 1: B → A</span>
+<span class="cm">// Move disk 2: B → C</span>
+<span class="cm">// Move disk 1: A → C</span>`,
+`<span class="cm">// COMPLEXITY ANALYSIS</span>
+
+<span class="cm">// Recurrence Relation:</span>
+<span class="cm">// T(1) = 1                (base case: 1 move)</span>
+<span class="cm">// T(n) = 2T(n-1) + 1     (2 recursive calls + 1 move)</span>
+
+<span class="cm">// Solving the recurrence:</span>
+<span class="cm">// T(n) = 2T(n-1) + 1</span>
+<span class="cm">//      = 2[2T(n-2) + 1] + 1 = 4T(n-2) + 3</span>
+<span class="cm">//      = 8T(n-3) + 7</span>
+<span class="cm">//      = 2^k * T(n-k) + (2^k - 1)</span>
+<span class="cm">// When k = n-1:</span>
+<span class="cm">//      = 2^(n-1) * T(1) + 2^(n-1) - 1</span>
+<span class="cm">//      = 2^(n-1) + 2^(n-1) - 1</span>
+<span class="cm">//      = 2^n - 1</span>
+
+<span class="cm">// ∴ T(n) = 2ⁿ - 1 = O(2ⁿ)   EXPONENTIAL</span>
+
+<span class="cm">// Minimum moves needed = 2ⁿ - 1</span>
+<span class="cm">// n=1: 1 move, n=2: 3 moves</span>
+<span class="cm">// n=3: 7 moves, n=10: 1023 moves</span>`
+    ],
+    tips: ["THREE parameters: n disks, source peg, auxiliary peg, destination peg.","Step 1: move (n-1) disks to AUXILIARY. Step 2: move disk n to DESTINATION. Step 3: move (n-1) from AUXILIARY to DESTINATION.","Minimum moves = 2ⁿ - 1. For full marks, DERIVE this from the recurrence.","Write the recurrence T(n) = 2T(n-1) + 1 and show the derivation step by step.","This is EXPONENTIAL O(2ⁿ) — the worst time complexity in your syllabus!"]
+  },
+
+  llinsert: {
+    title: "LL Insert at Head",
+    marks: "2-4 Marks",
+    type: "Linked List",
+    color: "badge-red",
+    desc: "Insert a new node at the <strong>beginning (head)</strong> of a singly linked list. Fastest insertion — O(1) time.",
+    tabs: ["Pseudocode"],
+    codes: [
+`<span class="cm">// INSERT at the BEGINNING of Singly Linked List</span>
+
+<span class="cm">// Node structure:</span>
+<span class="kw">STRUCT</span> Node:
+    data
+    next <span class="op">←</span> NULL
+<span class="kw">END STRUCT</span>
+
+<span class="kw">FUNCTION</span> <span class="fn">INSERT_AT_HEAD</span>(head, value):
+    <span class="cm">// Step 1: Create new node</span>
+    newNode <span class="op">←</span> <span class="fn">NEW</span> Node
+    newNode.data <span class="op">←</span> value
+    
+    <span class="cm">// Step 2: New node points to current head</span>
+    newNode.next <span class="op">←</span> head
+    
+    <span class="cm">// Step 3: Update head to new node</span>
+    head <span class="op">←</span> newNode
+    
+    <span class="kw">RETURN</span> head             <span class="cm">// return new head</span>
+<span class="kw">END FUNCTION</span>
+
+<span class="cm">// Time:  O(1) — constant time</span>
+<span class="cm">// Space: O(1) — only one new node</span>
+<span class="cm">// Works even if list is empty (head = NULL)</span>`
+    ],
+    tips: ["3 steps: CREATE node → point new node's next to head → update head.","O(1) because we don't traverse the list — just update two pointers.","Always return the new head since head pointer changes.","This works even when the list is empty (newNode.next = NULL, head = newNode)."]
+  },
+
+  llmiddle: {
+    title: "Find Middle of Linked List",
+    marks: "2-4 Marks",
+    type: "Linked List",
+    color: "badge-red",
+    desc: "Use the <strong>Two-Pointer (Slow & Fast) technique</strong>: slow moves 1 step, fast moves 2 steps. When fast reaches end, slow is at the middle.",
+    tabs: ["Pseudocode"],
+    codes: [
+`<span class="cm">// FIND MIDDLE ELEMENT of Singly Linked List</span>
+<span class="cm">// Floyd's Slow-Fast Pointer Technique</span>
+
+<span class="kw">FUNCTION</span> <span class="fn">FIND_MIDDLE</span>(head):
+    <span class="kw">IF</span> head <span class="op">=</span> NULL <span class="kw">THEN</span>
+        <span class="fn">PRINT</span>(<span class="str">"List is empty"</span>)
+        <span class="kw">RETURN</span> NULL
+    <span class="kw">END IF</span>
+    
+    slow <span class="op">←</span> head      <span class="cm">// moves 1 step at a time</span>
+    fast <span class="op">←</span> head      <span class="cm">// moves 2 steps at a time</span>
+    
+    <span class="kw">WHILE</span> fast <span class="op">≠</span> NULL <span class="kw">AND</span> fast.next <span class="op">≠</span> NULL <span class="kw">DO</span>
+        slow <span class="op">←</span> slow.next         <span class="cm">// 1 step</span>
+        fast <span class="op">←</span> fast.next.next    <span class="cm">// 2 steps</span>
+    <span class="kw">END WHILE</span>
+    
+    <span class="cm">// When fast reaches end, slow is at middle</span>
+    <span class="fn">PRINT</span>(<span class="str">"Middle element:"</span>, slow.data)
+    <span class="kw">RETURN</span> slow
+<span class="kw">END FUNCTION</span>
+
+<span class="cm">// Time:  O(n) — one pass through list</span>
+<span class="cm">// Space: O(1) — only two pointers</span>
+<span class="cm">// For even nodes: returns second of two middle nodes</span>`
+    ],
+    tips: ["Two pointer technique: slow = 1 step, fast = 2 steps. When fast = NULL, slow = middle.","Check BOTH fast ≠ NULL AND fast.next ≠ NULL to avoid null pointer errors.","O(n) time but only ONE pass — more efficient than counting nodes then traversing again.","For even-length list (e.g., 4 nodes): slow stops at 3rd node (second middle).","This same technique is used for cycle detection (Floyd's algorithm)!"]
+  },
+
+  bst: {
+    title: "BST Insert",
+    marks: "5-7 Marks",
+    type: "Trees",
+    color: "badge-green",
+    desc: "Insert into a Binary Search Tree: values <strong>less than root go left</strong>, values <strong>greater go right</strong>. BST property must be maintained.",
+    tabs: ["Recursive","Iterative"],
+    codes: [
+`<span class="cm">// BST INSERT — Recursive approach</span>
+<span class="kw">FUNCTION</span> <span class="fn">BST_INSERT</span>(root, value):
+    <span class="cm">// Base case: empty spot found, create node</span>
+    <span class="kw">IF</span> root <span class="op">=</span> NULL <span class="kw">THEN</span>
+        newNode <span class="op">←</span> <span class="fn">NEW</span> Node(value)
+        <span class="kw">RETURN</span> newNode
+    <span class="kw">END IF</span>
+    
+    <span class="cm">// Go left if value is smaller</span>
+    <span class="kw">IF</span> value <span class="op">&lt;</span> root.data <span class="kw">THEN</span>
+        root.left <span class="op">←</span> <span class="fn">BST_INSERT</span>(root.left, value)
+    
+    <span class="cm">// Go right if value is larger</span>
+    <span class="kw">ELSE IF</span> value <span class="op">&gt;</span> root.data <span class="kw">THEN</span>
+        root.right <span class="op">←</span> <span class="fn">BST_INSERT</span>(root.right, value)
+    
+    <span class="cm">// Duplicate — do nothing (or handle as needed)</span>
+    <span class="kw">ELSE</span>
+        <span class="fn">PRINT</span>(<span class="str">"Duplicate value — not inserted"</span>)
+    <span class="kw">END IF</span>
+    
+    <span class="kw">RETURN</span> root
+<span class="kw">END FUNCTION</span>
+
+<span class="cm">// Time: O(log n) avg, O(n) worst (skewed tree)</span>`,
+`<span class="cm">// BST INSERT — Iterative approach</span>
+<span class="kw">FUNCTION</span> <span class="fn">BST_INSERT_ITER</span>(root, value):
+    newNode <span class="op">←</span> <span class="fn">NEW</span> Node(value)
+    
+    <span class="kw">IF</span> root <span class="op">=</span> NULL <span class="kw">THEN</span>: <span class="kw">RETURN</span> newNode
+    
+    current <span class="op">←</span> root
+    
+    <span class="kw">WHILE</span> TRUE <span class="kw">DO</span>
+        <span class="kw">IF</span> value <span class="op">&lt;</span> current.data <span class="kw">THEN</span>
+            <span class="kw">IF</span> current.left <span class="op">=</span> NULL <span class="kw">THEN</span>
+                current.left <span class="op">←</span> newNode
+                <span class="kw">BREAK</span>
+            <span class="kw">ELSE</span>
+                current <span class="op">←</span> current.left
+            <span class="kw">END IF</span>
+        <span class="kw">ELSE IF</span> value <span class="op">&gt;</span> current.data <span class="kw">THEN</span>
+            <span class="kw">IF</span> current.right <span class="op">=</span> NULL <span class="kw">THEN</span>
+                current.right <span class="op">←</span> newNode
+                <span class="kw">BREAK</span>
+            <span class="kw">ELSE</span>
+                current <span class="op">←</span> current.right
+            <span class="kw">END IF</span>
+        <span class="kw">END IF</span>
+    <span class="kw">END WHILE</span>
+    
+    <span class="kw">RETURN</span> root
+<span class="kw">END FUNCTION</span>`
+    ],
+    tips: ["BST rule: left < root < right at every node.","Worst case O(n) happens when inserting in sorted order — creates a skewed tree (like a linked list).","AVL tree was invented specifically to prevent this worst case.","In-order traversal of BST always yields sorted output — say this in your exam!"]
+  },
+
+  binsearch: {
+    title: "Binary Search",
+    marks: "2-4 Marks",
+    type: "Searching",
+    color: "badge-amber",
+    desc: "Search a <strong>sorted array</strong> by repeatedly halving the search space. Compare target with mid element and eliminate half each time.",
+    tabs: ["Pseudocode"],
+    codes: [
+`<span class="cm">// BINARY SEARCH — requires SORTED array</span>
+<span class="kw">FUNCTION</span> <span class="fn">BINARY_SEARCH</span>(arr, n, target):
+    low <span class="op">←</span> <span class="num">0</span>
+    high <span class="op">←</span> n <span class="op">-</span> <span class="num">1</span>
+    
+    <span class="kw">WHILE</span> low <span class="op">≤</span> high <span class="kw">DO</span>
+        mid <span class="op">←</span> (low <span class="op">+</span> high) <span class="op">/</span> <span class="num">2</span>   <span class="cm">// integer division</span>
+        
+        <span class="kw">IF</span> arr[mid] <span class="op">=</span> target <span class="kw">THEN</span>
+            <span class="kw">RETURN</span> mid               <span class="cm">// Found! Return index</span>
+        
+        <span class="kw">ELSE IF</span> arr[mid] <span class="op">&lt;</span> target <span class="kw">THEN</span>
+            low <span class="op">←</span> mid <span class="op">+</span> <span class="num">1</span>           <span class="cm">// target is in right half</span>
+        
+        <span class="kw">ELSE</span>
+            high <span class="op">←</span> mid <span class="op">-</span> <span class="num">1</span>          <span class="cm">// target is in left half</span>
+        <span class="kw">END IF</span>
+    <span class="kw">END WHILE</span>
+    
+    <span class="kw">RETURN</span> <span class="op">-</span><span class="num">1</span>                     <span class="cm">// Not found</span>
+<span class="kw">END FUNCTION</span>
+
+<span class="cm">// Best Case:  O(1) — target is middle element</span>
+<span class="cm">// Worst Case: O(log n) — halved each iteration</span>
+<span class="cm">// Space: O(1) iterative, O(log n) recursive</span>`
+    ],
+    tips: ["Binary Search REQUIRES the array to be SORTED first.","Best O(1) — target found at first mid. Worst O(log n) — target not found.","mid = (low + high) / 2 (integer division, always).","If arr[mid] < target → move low up. If arr[mid] > target → move high down.","Return -1 when low > high (element not found)."]
+  },
+
+  bubblesort: {
+    title: "Bubble Sort",
+    marks: "2-4 Marks",
+    type: "Sorting",
+    color: "badge-amber",
+    desc: "Repeatedly compares <strong>adjacent elements</strong> and swaps them if they're in wrong order. After each pass, the largest element 'bubbles' to the end.",
+    tabs: ["Pseudocode"],
+    codes: [
+`<span class="cm">// BUBBLE SORT — adjacent element comparison</span>
+<span class="kw">FUNCTION</span> <span class="fn">BUBBLE_SORT</span>(arr, n):
+    <span class="kw">FOR</span> i <span class="op">←</span> <span class="num">0</span> <span class="kw">TO</span> n<span class="op">-</span><span class="num">2</span> <span class="kw">DO</span>           <span class="cm">// n-1 passes</span>
+        swapped <span class="op">←</span> FALSE             <span class="cm">// optimization flag</span>
+        
+        <span class="kw">FOR</span> j <span class="op">←</span> <span class="num">0</span> <span class="kw">TO</span> n<span class="op">-</span>i<span class="op">-</span><span class="num">2</span> <span class="kw">DO</span>      <span class="cm">// last i are sorted</span>
+            <span class="kw">IF</span> arr[j] <span class="op">&gt;</span> arr[j<span class="op">+</span><span class="num">1</span>] <span class="kw">THEN</span>
+                <span class="fn">SWAP</span>(arr[j], arr[j<span class="op">+</span><span class="num">1</span>])
+                swapped <span class="op">←</span> TRUE
+            <span class="kw">END IF</span>
+        <span class="kw">END FOR</span>
+        
+        <span class="cm">// If no swap in this pass → array is sorted</span>
+        <span class="kw">IF</span> swapped <span class="op">=</span> FALSE <span class="kw">THEN</span>: <span class="kw">BREAK</span>
+    <span class="kw">END FOR</span>
+<span class="kw">END FUNCTION</span>
+
+<span class="cm">// Best Case:  O(n) — already sorted (with swap flag)</span>
+<span class="cm">// Avg Case:   O(n²)</span>
+<span class="cm">// Worst Case: O(n²) — reverse sorted</span>
+<span class="cm">// Space: O(1) — in-place sorting</span>
+<span class="cm">// Stable: YES</span>`
+    ],
+    tips: ["Without the swap flag: always O(n²). WITH the swap flag: best case becomes O(n).","Stable sort — equal elements maintain relative order.","After i-th pass, the last i elements are in their final sorted position.","Rarely used in practice — O(n²) is too slow for large datasets."]
+  },
+
+  selectsort: {
+    title: "Selection Sort",
+    marks: "2-4 Marks",
+    type: "Sorting",
+    color: "badge-amber",
+    desc: "Find the <strong>minimum element</strong> in the unsorted portion and place it at the beginning. Repeat for remaining unsorted portion.",
+    tabs: ["Pseudocode"],
+    codes: [
+`<span class="cm">// SELECTION SORT — find minimum, place at front</span>
+<span class="kw">FUNCTION</span> <span class="fn">SELECTION_SORT</span>(arr, n):
+    <span class="kw">FOR</span> i <span class="op">←</span> <span class="num">0</span> <span class="kw">TO</span> n<span class="op">-</span><span class="num">2</span> <span class="kw">DO</span>
+        <span class="cm">// Find minimum in arr[i..n-1]</span>
+        minIdx <span class="op">←</span> i
+        
+        <span class="kw">FOR</span> j <span class="op">←</span> i<span class="op">+</span><span class="num">1</span> <span class="kw">TO</span> n<span class="op">-</span><span class="num">1</span> <span class="kw">DO</span>
+            <span class="kw">IF</span> arr[j] <span class="op">&lt;</span> arr[minIdx] <span class="kw">THEN</span>
+                minIdx <span class="op">←</span> j
+            <span class="kw">END IF</span>
+        <span class="kw">END FOR</span>
+        
+        <span class="cm">// Swap minimum with first unsorted element</span>
+        <span class="kw">IF</span> minIdx <span class="op">≠</span> i <span class="kw">THEN</span>
+            <span class="fn">SWAP</span>(arr[i], arr[minIdx])
+        <span class="kw">END IF</span>
+    <span class="kw">END FOR</span>
+<span class="kw">END FUNCTION</span>
+
+<span class="cm">// Best Case:  O(n²) — always scans full unsorted part</span>
+<span class="cm">// Avg Case:   O(n²)</span>
+<span class="cm">// Worst Case: O(n²)</span>
+<span class="cm">// Space: O(1) — in-place</span>
+<span class="cm">// Stable: NO (swapping can disrupt equal elements)</span>`
+    ],
+    tips: ["Selection Sort always O(n²) — even if array is sorted! It always does the full scan.","Makes at most n-1 swaps — useful when swaps are expensive.","NOT stable — swapping non-adjacent elements can change relative order.","Key difference from Bubble Sort: Bubble swaps as it goes, Selection finds min first then swaps."]
+  },
+
+  insertsort: {
+    title: "Insertion Sort",
+    marks: "5-7 Marks",
+    type: "Sorting",
+    color: "badge-amber",
+    desc: "Build sorted array one element at a time. For each element, <strong>insert it into its correct position</strong> in the already-sorted portion by shifting larger elements right.",
+    tabs: ["Pseudocode","Complexity"],
+    codes: [
+`<span class="cm">// INSERTION SORT — build sorted portion left to right</span>
+<span class="kw">FUNCTION</span> <span class="fn">INSERTION_SORT</span>(arr, n):
+    <span class="kw">FOR</span> i <span class="op">←</span> <span class="num">1</span> <span class="kw">TO</span> n<span class="op">-</span><span class="num">1</span> <span class="kw">DO</span>
+        key <span class="op">←</span> arr[i]             <span class="cm">// element to be inserted</span>
+        j <span class="op">←</span> i <span class="op">-</span> <span class="num">1</span>
+        
+        <span class="cm">// Shift elements greater than key to the right</span>
+        <span class="kw">WHILE</span> j <span class="op">≥</span> <span class="num">0</span> <span class="kw">AND</span> arr[j] <span class="op">&gt;</span> key <span class="kw">DO</span>
+            arr[j<span class="op">+</span><span class="num">1</span>] <span class="op">←</span> arr[j]
+            j <span class="op">←</span> j <span class="op">-</span> <span class="num">1</span>
+        <span class="kw">END WHILE</span>
+        
+        arr[j<span class="op">+</span><span class="num">1</span>] <span class="op">←</span> key            <span class="cm">// place key in correct spot</span>
+    <span class="kw">END FOR</span>
+<span class="kw">END FUNCTION</span>
+
+<span class="cm">// Analogy: Sorting playing cards in hand</span>
+<span class="cm">// arr[0..i-1] is always sorted</span>
+<span class="cm">// arr[i..n-1] is unsorted portion</span>`,
+`<span class="cm">// COMPLEXITY ANALYSIS</span>
+<span class="cm">// Best Case:  O(n)  — already sorted, inner loop never runs</span>
+<span class="cm">// Avg Case:   O(n²) — each element inserted in middle on avg</span>
+<span class="cm">// Worst Case: O(n²) — reverse sorted, max inner loop iterations</span>
+<span class="cm">// Space:      O(1)  — in-place</span>
+<span class="cm">// Stable:     YES</span>
+
+<span class="cm">// Average case calculation:</span>
+<span class="cm">// For element at position i, avg comparisons = i/2</span>
+<span class="cm">// Total = Σ(i/2) for i=1 to n-1</span>
+<span class="cm">//       = (n-1)n/4 = O(n²)</span>
+
+<span class="cm">// Insertion sort is efficient for:</span>
+<span class="cm">// - Nearly sorted arrays</span>
+<span class="cm">// - Small datasets</span>
+<span class="cm">// - Online algorithms (elements arrive one by one)</span>`
+    ],
+    tips: ["Best case O(n) happens when array is already sorted — inner while loop never executes.","Like sorting cards: pick next card, slide it left until it's in the right spot.","Stable and in-place. More efficient than Bubble/Selection for nearly-sorted data.","For average case: each element needs to be compared with half the sorted portion on average."]
+  },
+
+  polyadd: {
+    title: "Polynomial Addition (LL)",
+    marks: "8-10 Marks",
+    type: "Linked List",
+    color: "badge-red",
+    desc: "Represent polynomials as linked lists where each node stores <strong>coefficient and exponent</strong>. Add two polynomials by merging nodes with matching exponents.",
+    tabs: ["Node Structure","ADD Algorithm"],
+    codes: [
+`<span class="cm">// POLYNOMIAL NODE STRUCTURE</span>
+<span class="kw">STRUCT</span> PolyNode:
+    coeff    <span class="cm">// coefficient of term</span>
+    exp      <span class="cm">// exponent/power of term</span>
+    next     <span class="cm">// pointer to next node</span>
+<span class="kw">END STRUCT</span>
+
+<span class="cm">// Example: 3x⁴ + 2x² + 5 represented as:</span>
+<span class="cm">// [3,4] → [2,2] → [5,0] → NULL</span>
+
+<span class="kw">FUNCTION</span> <span class="fn">CREATE_NODE</span>(coeff, exp):
+    node <span class="op">←</span> <span class="fn">NEW</span> PolyNode
+    node.coeff <span class="op">←</span> coeff
+    node.exp   <span class="op">←</span> exp
+    node.next  <span class="op">←</span> NULL
+    <span class="kw">RETURN</span> node
+<span class="kw">END FUNCTION</span>
+
+<span class="cm">// Polynomials are stored in DECREASING order of exponents</span>
+<span class="cm">// P1: 4x³ + 3x² + 2x + 1  →  [4,3]→[3,2]→[2,1]→[1,0]</span>
+<span class="cm">// P2: 5x³ + 2x + 7        →  [5,3]→[2,1]→[7,0]</span>`,
+`<span class="cm">// POLYNOMIAL ADDITION</span>
+<span class="kw">FUNCTION</span> <span class="fn">POLY_ADD</span>(p1, p2):
+    result <span class="op">←</span> NULL
+    tail   <span class="op">←</span> NULL
+    
+    <span class="kw">WHILE</span> p1 <span class="op">≠</span> NULL <span class="kw">AND</span> p2 <span class="op">≠</span> NULL <span class="kw">DO</span>
+        
+        <span class="kw">IF</span> p1.exp <span class="op">&gt;</span> p2.exp <span class="kw">THEN</span>
+            <span class="cm">// P1's exponent is higher — add it to result</span>
+            node <span class="op">←</span> <span class="fn">CREATE_NODE</span>(p1.coeff, p1.exp)
+            p1 <span class="op">←</span> p1.next
+        
+        <span class="kw">ELSE IF</span> p2.exp <span class="op">&gt;</span> p1.exp <span class="kw">THEN</span>
+            <span class="cm">// P2's exponent is higher — add it to result</span>
+            node <span class="op">←</span> <span class="fn">CREATE_NODE</span>(p2.coeff, p2.exp)
+            p2 <span class="op">←</span> p2.next
+        
+        <span class="kw">ELSE</span>
+            <span class="cm">// Equal exponents — add coefficients</span>
+            sumCoeff <span class="op">←</span> p1.coeff <span class="op">+</span> p2.coeff
+            <span class="kw">IF</span> sumCoeff <span class="op">≠</span> <span class="num">0</span> <span class="kw">THEN</span>
+                node <span class="op">←</span> <span class="fn">CREATE_NODE</span>(sumCoeff, p1.exp)
+            <span class="kw">END IF</span>
+            p1 <span class="op">←</span> p1.next
+            p2 <span class="op">←</span> p2.next
+        <span class="kw">END IF</span>
+        
+        <span class="cm">// Append node to result list</span>
+        <span class="kw">IF</span> result <span class="op">=</span> NULL <span class="kw">THEN</span>: result <span class="op">←</span> node; tail <span class="op">←</span> node
+        <span class="kw">ELSE</span>: tail.next <span class="op">←</span> node; tail <span class="op">←</span> node
+    <span class="kw">END WHILE</span>
+    
+    <span class="cm">// Append remaining nodes of either polynomial</span>
+    <span class="kw">WHILE</span> p1 <span class="op">≠</span> NULL <span class="kw">DO</span>: tail.next <span class="op">←</span> p1; p1 <span class="op">←</span> p1.next
+    <span class="kw">WHILE</span> p2 <span class="op">≠</span> NULL <span class="kw">DO</span>: tail.next <span class="op">←</span> p2; p2 <span class="op">←</span> p2.next
+    
+    <span class="kw">RETURN</span> result
+<span class="kw">END FUNCTION</span>
+
+<span class="cm">// Time: O(m + n) where m,n are lengths of polynomials</span>`
+    ],
+    tips: ["Each node = (coefficient, exponent, next). Store in DECREASING order of exponents.","3 cases: p1.exp > p2.exp → take p1 term; p2.exp > p1.exp → take p2 term; equal → add coefficients.","Skip nodes where sumCoeff = 0 (terms cancel each other out).","After the while loop, append remaining nodes of whichever polynomial is not exhausted.","Time complexity O(m+n) — similar to merging two sorted lists."]
+  },
+
+  exptree: {
+    title: "Expression Tree Evaluation",
+    marks: "2-4 Marks",
+    type: "Trees",
+    color: "badge-green",
+    desc: "An expression tree stores operators at internal nodes and operands at leaves. Evaluate using <strong>Post-order traversal</strong> — evaluate children before applying parent operator.",
+    tabs: ["Pseudocode"],
+    codes: [
+`<span class="cm">// EVALUATE EXPRESSION TREE using Post-order traversal</span>
+<span class="kw">FUNCTION</span> <span class="fn">EVALUATE</span>(node):
+    <span class="cm">// Base case: leaf node (operand)</span>
+    <span class="kw">IF</span> node.left <span class="op">=</span> NULL <span class="kw">AND</span> node.right <span class="op">=</span> NULL <span class="kw">THEN</span>
+        <span class="kw">RETURN</span> node.data        <span class="cm">// return operand value</span>
+    <span class="kw">END IF</span>
+    
+    <span class="cm">// Recursively evaluate left and right subtrees</span>
+    leftVal  <span class="op">←</span> <span class="fn">EVALUATE</span>(node.left)
+    rightVal <span class="op">←</span> <span class="fn">EVALUATE</span>(node.right)
+    
+    <span class="cm">// Apply operator at current (internal) node</span>
+    <span class="kw">SWITCH</span> node.data:
+        <span class="kw">CASE</span> <span class="str">'+'</span>: <span class="kw">RETURN</span> leftVal <span class="op">+</span> rightVal
+        <span class="kw">CASE</span> <span class="str">'-'</span>: <span class="kw">RETURN</span> leftVal <span class="op">-</span> rightVal
+        <span class="kw">CASE</span> <span class="str">'*'</span>: <span class="kw">RETURN</span> leftVal <span class="op">*</span> rightVal
+        <span class="kw">CASE</span> <span class="str">'/'</span>: <span class="kw">RETURN</span> leftVal <span class="op">/</span> rightVal
+    <span class="kw">END SWITCH</span>
+<span class="kw">END FUNCTION</span>
+
+<span class="cm">// Tree for (3 + 4) * 2:</span>
+<span class="cm">//        *</span>
+<span class="cm">//       / \</span>
+<span class="cm">//      +   2</span>
+<span class="cm">//     / \</span>
+<span class="cm">//    3   4</span>
+<span class="cm">// Result: EVALUATE(*) = EVAL(+) * 2 = 7 * 2 = 14</span>
+<span class="cm">// Time: O(n) — visits every node once</span>`
+    ],
+    tips: ["Leaf nodes are OPERANDS (numbers). Internal nodes are OPERATORS (+,-,*,/).","Evaluation uses POST-ORDER traversal: evaluate left → right → then apply operator.","In-order traversal of expression tree gives the INFIX expression.","Pre-order traversal gives PREFIX (Polish) notation.","Post-order traversal gives POSTFIX (Reverse Polish) notation."]
+  }
+};
+
+const quizQuestions = [
+  { q:"What is the time complexity of Quick Sort in the worst case?", opts:["O(n log n)","O(n²)","O(n)","O(log n)"], ans:1, exp:"Worst case O(n²) occurs when the pivot is always the smallest or largest element (e.g., sorted array with last-element pivot)." },
+  { q:"Which traversal of a BST gives elements in sorted order?", opts:["Pre-order","Post-order","In-order","Level-order"], ans:2, exp:"In-order traversal (Left → Root → Right) of a BST always produces elements in ascending sorted order." },
+  { q:"What data structure does BFS use?", opts:["Stack","Queue","Priority Queue","Linked List"], ans:1, exp:"BFS uses a Queue (FIFO). DFS uses a Stack (LIFO) or recursion." },
+  { q:"How many moves does Tower of Hanoi need for n disks?", opts:["n²","n!","2ⁿ - 1","n log n"], ans:2, exp:"Minimum moves = 2ⁿ - 1. This comes from the recurrence T(n) = 2T(n-1) + 1." },
+  { q:"Which rotation fixes the LL imbalance in AVL tree?", opts:["Left rotation","Right rotation","Left-Right rotation","Right-Left rotation"], ans:1, exp:"LL case (inserted in left subtree of left child) is fixed by a single Right Rotation (LL Rotation)." },
+  { q:"What is the time complexity of Merge Sort in ALL cases?", opts:["O(n²)","O(n)","O(n log n)","O(log n)"], ans:2, exp:"Merge Sort is always O(n log n) — best, average, and worst case. This comes from T(n) = 2T(n/2) + n." },
+  { q:"What does Dijkstra's algorithm NOT work with?", opts:["Directed graphs","Undirected graphs","Negative weight edges","Weighted graphs"], ans:2, exp:"Dijkstra fails with negative edge weights. Use Bellman-Ford algorithm for graphs with negative weights." },
+  { q:"Stack Overflow occurs when:", opts:["Stack is empty and pop is called","Stack is full and push is called","Stack has one element","top = -1"], ans:1, exp:"Stack Overflow = trying to push onto a full stack (top = MAX-1). Underflow = popping from empty stack (top = -1)." },
+  { q:"In Infix to Postfix, what happens when we encounter ')'?", opts:["Push to stack","Pop and output until '('","Add to output directly","Clear the stack"], ans:1, exp:"On ')': pop from stack and output until matching '(' is found. Discard both parentheses." },
+  { q:"What is the space complexity of Merge Sort?", opts:["O(1)","O(log n)","O(n)","O(n²)"], ans:2, exp:"Merge Sort requires O(n) auxiliary space for the temporary arrays used in the merge step." },
+  { q:"What is the Balance Factor condition for an AVL tree node?", opts:["|h(left) - h(right)| ≤ 2","|h(left) - h(right)| ≤ 1","h(left) = h(right)","h(left) ≥ h(right)"], ans:1, exp:"AVL tree requires |Balance Factor| ≤ 1 for every node, where BF = height(left) - height(right)." },
+  { q:"Two-pointer (slow & fast) technique finds the middle of a linked list. What is its time complexity?", opts:["O(n²)","O(1)","O(n)","O(log n)"], ans:2, exp:"O(n) — fast pointer moves 2 steps, slow moves 1 step. When fast reaches end, slow is at middle. Single pass." },
+  { q:"Which sorting algorithm is NOT stable?", opts:["Merge Sort","Bubble Sort","Insertion Sort","Quick Sort"], ans:3, exp:"Quick Sort is NOT stable — the partition step can change relative order of equal elements. Merge, Bubble, and Insertion Sort are all stable." },
+  { q:"In a Circular Queue, what is the full condition?", opts:["rear = MAX - 1","(rear + 1) % MAX = front","front = rear","rear = 0"], ans:1, exp:"Full condition: (rear + 1) % MAX == front. This is the defining formula for circular queue overflow detection." },
+  { q:"Topological Sort only works on:", opts:["Undirected graphs","Weighted graphs","Directed Acyclic Graphs (DAG)","Complete graphs"], ans:2, exp:"Topological sort requires a DAG (Directed Acyclic Graph). If there's a cycle, no valid topological order exists." },
+  { q:"What is the best case time complexity of Selection Sort?", opts:["O(n)","O(n log n)","O(n²)","O(1)"], ans:2, exp:"Selection Sort is ALWAYS O(n²) — even for sorted arrays it scans the entire unsorted portion each time." },
+  { q:"Which tree traversal is used to evaluate an expression tree?", opts:["Pre-order","In-order","Post-order","Level-order"], ans:2, exp:"Post-order (Left → Right → Root) evaluates children first, then applies the operator at root. Essential for bottom-up evaluation." },
+  { q:"What is the time complexity of Dijkstra's algorithm with an adjacency matrix?", opts:["O(E log V)","O(V + E)","O(V²)","O(V log V)"], ans:2, exp:"With adjacency matrix: O(V²) since we scan all V vertices to find minimum each of V iterations. With min-heap: O(E log V)." },
+  { q:"In BST insertion, worst case O(n) occurs when:", opts:["Tree is balanced","Elements are inserted randomly","Elements are inserted in sorted order","Tree has only left children"], ans:2, exp:"Inserting in sorted order creates a skewed tree (like a linked list), making every insertion traverse all existing nodes." },
+  { q:"Which of these correctly describes Infix operator precedence for the stack?", opts:["( has highest priority","^ has highest priority, then *, /, then +, -","+ and - have highest priority","All operators have equal priority"], ans:1, exp:"Precedence: ^ (3) > *, / (2) > +, - (1). '(' has effective priority 0 inside the stack (doesn't pop other operators)." }
+];
+
+let currentQ = 0, score = 0, answered = false, shuffled = [];
+
+function showView(v) {
+  document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+  document.getElementById('view-' + v).classList.add('active');
+  event.target.classList.add('active');
+  document.getElementById('sidebar').style.display = (v === 'pseudocode') ? 'block' : (window.innerWidth > 650 ? 'block' : 'none');
+  if (v === 'quiz' && shuffled.length === 0) initQuiz();
+}
+
+function loadTopic(id) {
+  const t = topics[id];
+  if (!t) return;
+  document.querySelectorAll('.topic-btn').forEach(b => b.classList.remove('active'));
+  event.currentTarget.classList.add('active');
+  showViewDirect('pseudocode');
+  
+  let tabsHtml = t.tabs.map((tab, i) => `<button class="algo-tab ${i===0?'active':''}" onclick="switchTab(${i}, this)">${tab}</button>`).join('');
+  let codesHtml = t.codes.map((code, i) => `<div class="sub-content ${i===0?'active':''}" id="sub-${i}"><div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copy</button><pre>${code}</pre></div></div>`).join('');
+  let tipsHtml = t.tips.map(tip => `<li>${tip}</li>`).join('');
+  let marksColor = t.color;
+  let typeColor = t.type === 'Divide & Conquer' ? 'badge-amber' : t.type === 'Trees' ? 'badge-green' : t.type === 'Graphs' ? 'badge-teal' : 'badge-purple';
+
+  document.getElementById('topic-content').innerHTML = `
+    <div class="topic-header">
+      <div class="topic-title">${t.title}</div>
+      <div class="topic-meta">
+        <span class="badge ${marksColor}">${t.marks}</span>
+        <span class="badge ${typeColor}">${t.type}</span>
+      </div>
+    </div>
+    <div class="info-box">${t.desc}</div>
+    <div class="section-title">Pseudocode</div>
+    <div class="algo-tabs">${tabsHtml}</div>
+    ${codesHtml}
+    <div class="section-title">Exam Tips</div>
+    <ul class="tips-list">${tipsHtml}</ul>
+  `;
+}
+
+function showViewDirect(v) {
+  document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
+  document.getElementById('view-' + v).classList.add('active');
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => { if(b.textContent.toLowerCase().includes(v.substring(0,4))) b.classList.add('active'); });
+}
+
+function switchTab(idx, btn) {
+  document.querySelectorAll('.algo-tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.sub-content').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('sub-' + idx).classList.add('active');
+}
+
+function copyCode(btn) {
+  const code = btn.nextElementSibling.innerText;
+  navigator.clipboard.writeText(code);
+  btn.textContent = 'Copied!';
+  setTimeout(() => btn.textContent = 'Copy', 1500);
+}
+
+function initQuiz() {
+  shuffled = [...quizQuestions].sort(() => Math.random() - 0.5);
+  currentQ = 0; score = 0;
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const container = document.getElementById('quiz-container');
+  if (currentQ >= shuffled.length) {
+    const pct = Math.round((score / shuffled.length) * 100);
+    const msg = pct >= 80 ? "Excellent! You're exam-ready! 🎉" : pct >= 60 ? "Good work! Review the topics you missed. 📚" : "Keep revising — check the pseudocode section! 💪";
+    container.innerHTML = `
+      <div class="score-card">
+        <div class="score-num">${score}/${shuffled.length}</div>
+        <div class="score-label">Final Score — ${pct}%</div>
+        <div class="score-msg">${msg}</div>
+        <div style="display:flex;gap:12px;justify-content:center;">
+          <button class="btn btn-primary" onclick="initQuiz()">Retake Quiz</button>
+          <button class="btn btn-outline" onclick="showViewDirect('pseudocode')">Review Pseudocodes</button>
+        </div>
+      </div>`;
+    return;
+  }
+  answered = false;
+  const q = shuffled[currentQ];
+  const pct = Math.round((currentQ / shuffled.length) * 100);
+  const optsHtml = q.opts.map((o, i) => `<button class="quiz-opt" onclick="answer(${i}, this)">${String.fromCharCode(65+i)}) ${o}</button>`).join('');
+  container.innerHTML = `
+    <div class="quiz-header">
+      <div class="quiz-progress"><div class="quiz-bar" style="width:${pct}%"></div></div>
+      <div class="quiz-meta"><span>Question ${currentQ+1} of ${shuffled.length}</span><span>Score: ${score}</span></div>
+    </div>
+    <div class="quiz-card">
+      <div class="quiz-q">${q.q}</div>
+      <div class="quiz-options">${optsHtml}</div>
+      <div class="quiz-feedback" id="qfb"></div>
+    </div>
+    <div class="quiz-actions">
+      <button class="btn btn-primary" onclick="nextQ()" id="nextBtn" style="display:none">Next →</button>
+    </div>`;
+}
+
+function answer(idx, btn) {
+  if (answered) return;
+  answered = true;
+  const q = shuffled[currentQ];
+  const opts = document.querySelectorAll('.quiz-opt');
+  opts.forEach(o => o.disabled = true);
+  const fb = document.getElementById('qfb');
+  if (idx === q.ans) {
+    score++;
+    btn.classList.add('correct');
+    fb.className = 'quiz-feedback show correct-fb';
+    fb.innerHTML = '✓ Correct! ' + q.exp;
+  } else {
+    btn.classList.add('wrong');
+    opts[q.ans].classList.add('correct');
+    fb.className = 'quiz-feedback show wrong-fb';
+    fb.innerHTML = '✗ Incorrect. ' + q.exp;
+  }
+  document.getElementById('nextBtn').style.display = 'block';
+}
+
+function nextQ() { currentQ++; renderQuestion(); }
+</script>
+</body>
+</html>
