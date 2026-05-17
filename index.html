@@ -18,6 +18,7 @@
     --amber: #fbbf24;
     --red: #f87171;
     --green: #4ade80;
+    --blue: #60a5fa;
     --text: #f0eeff;
     --text2: #a09cc0;
     --text3: #6b6880;
@@ -49,6 +50,7 @@
   .topic-btn:hover { background:var(--bg3); color:var(--text); }
   .topic-btn.active { background:rgba(124,109,245,0.12); border-color:rgba(124,109,245,0.3); color:var(--accent3); }
   .topic-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+  .dot-array { background:var(--blue); }
   .dot-sort { background:var(--amber); }
   .dot-tree { background:var(--green); }
   .dot-graph { background:var(--teal); }
@@ -82,6 +84,7 @@
   .topic-title { font-family:'Syne',sans-serif; font-size:1.8rem; font-weight:800; margin-bottom:0.5rem; }
   .topic-meta { display:flex; align-items:center; gap:0.75rem; flex-wrap:wrap; }
   .badge { font-size:0.72rem; padding:3px 10px; border-radius:20px; font-family:'Syne',sans-serif; font-weight:600; border:1px solid; }
+  .badge-blue { background:rgba(96,165,250,0.1); border-color:rgba(96,165,250,0.3); color:var(--blue); }
   .badge-amber { background:rgba(251,191,36,0.1); border-color:rgba(251,191,36,0.3); color:var(--amber); }
   .badge-teal { background:rgba(45,212,191,0.1); border-color:rgba(45,212,191,0.3); color:var(--teal); }
   .badge-red { background:rgba(248,113,113,0.1); border-color:rgba(248,113,113,0.3); color:var(--red); }
@@ -159,7 +162,7 @@
   ::-webkit-scrollbar-track { background:var(--bg2); }
   ::-webkit-scrollbar-thumb { background:var(--bg4); border-radius:3px; }
 
-  /* --- NEW MOBILE RESPONSIVENESS --- */
+  /* --- MOBILE RESPONSIVENESS --- */
   .hamburger { display: none; background: none; border: none; color: var(--text); cursor: pointer; padding: 0; align-items: center; justify-content: center; }
   .backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 998; backdrop-filter: blur(2px); opacity: 0; transition: opacity 0.3s; }
   .backdrop.active { display: block; opacity: 1; }
@@ -174,14 +177,14 @@
   @media(max-width:650px) {
     .header { height: auto; min-height: 64px; flex-wrap: wrap; padding: 0.75rem 1rem; gap: 10px; }
     .hamburger { display: flex; }
-    .tag { display: none; } /* Hide tag on mobile to save space */
+    .tag { display: none; } 
     .header-nav { width: 100%; order: 3; margin-top: 5px; max-width: 100%; justify-content: flex-start; }
     
     .sidebar { 
-      display: block !important; /* Overrides original inline JS display */
+      display: block !important;
       position: fixed; 
       top: 0; 
-      left: -280px; /* Hidden by default */
+      left: -280px;
       height: 100vh; 
       z-index: 999; 
       transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -223,7 +226,11 @@
 <div class="app">
   <div class="sidebar" id="sidebar">
     <div class="sidebar-section">
-      <div class="sidebar-label">Sorting Algorithms</div>
+      <div class="sidebar-label">Arrays</div>
+      <button class="topic-btn" onclick="loadTopic('arrays')"><span class="topic-dot dot-array"></span>Array Operations<span class="marks-badge">2-5m</span></button>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Sorting & Searching</div>
       <button class="topic-btn" onclick="loadTopic('quicksort')"><span class="topic-dot dot-sort"></span>Quick Sort<span class="marks-badge">8-10m</span></button>
       <button class="topic-btn" onclick="loadTopic('mergesort')"><span class="topic-dot dot-sort"></span>Merge Sort<span class="marks-badge">8-10m</span></button>
       <button class="topic-btn" onclick="loadTopic('bubblesort')"><span class="topic-dot dot-sort"></span>Bubble Sort<span class="marks-badge">2-4m</span></button>
@@ -248,13 +255,18 @@
     <div class="sidebar-section">
       <div class="sidebar-label">Linked Lists</div>
       <button class="topic-btn" onclick="loadTopic('llinsert')"><span class="topic-dot dot-list"></span>LL Insert (Head)<span class="marks-badge">2-4m</span></button>
-      <button class="topic-btn" onclick="loadTopic('llmiddle')"><span class="topic-dot dot-list"></span>LL Middle Element<span class="marks-badge">2-4m</span></button>
+      <button class="topic-btn" onclick="loadTopic('llmiddle')"><span class="topic-dot dot-list"></span>LL Find Middle<span class="marks-badge">2-4m</span></button>
+      <button class="topic-btn" onclick="loadTopic('lldelete_singly')"><span class="topic-dot dot-list"></span>Delete: Singly LL<span class="marks-badge">5-7m</span></button>
+      <button class="topic-btn" onclick="loadTopic('lldelete_doubly')"><span class="topic-dot dot-list"></span>Delete: Doubly LL<span class="marks-badge">5-7m</span></button>
+      <button class="topic-btn" onclick="loadTopic('lldelete_circular')"><span class="topic-dot dot-list"></span>Delete: Circular LL<span class="marks-badge">5-7m</span></button>
       <button class="topic-btn" onclick="loadTopic('polyadd')"><span class="topic-dot dot-list"></span>Polynomial Addition<span class="marks-badge">8-10m</span></button>
     </div>
     <div class="sidebar-section">
       <div class="sidebar-label">Stack & Queue</div>
-      <button class="topic-btn" onclick="loadTopic('stack')"><span class="topic-dot dot-stack"></span>Stack Push/Pop<span class="marks-badge">5-7m</span></button>
+      <button class="topic-btn" onclick="loadTopic('stack')"><span class="topic-dot dot-stack"></span>Stack (Array)<span class="marks-badge">5-7m</span></button>
+      <button class="topic-btn" onclick="loadTopic('stack_ll')"><span class="topic-dot dot-stack"></span>Stack (Linked List)<span class="marks-badge">5-7m</span></button>
       <button class="topic-btn" onclick="loadTopic('queue')"><span class="topic-dot dot-stack"></span>Circular Queue<span class="marks-badge">5-7m</span></button>
+      <button class="topic-btn" onclick="loadTopic('queue_ll')"><span class="topic-dot dot-stack"></span>Queue (Linked List)<span class="marks-badge">5-7m</span></button>
       <button class="topic-btn" onclick="loadTopic('infix')"><span class="topic-dot dot-stack"></span>Infix → Postfix<span class="marks-badge">8-10m</span></button>
       <button class="topic-btn" onclick="loadTopic('hanoi')"><span class="topic-dot dot-stack"></span>Tower of Hanoi<span class="marks-badge">8-10m</span></button>
     </div>
@@ -267,27 +279,27 @@
         <div class="hero-title">Master <span>DSA</span> for Your Exam</div>
         <div class="hero-sub">All high-yield pseudocodes, time complexities, and key concepts — organized by marks and topic. Let's crack it. 🎯</div>
         <div class="stats-row">
-          <div class="stat-card"><div class="stat-num">20</div><div class="stat-label">Algorithms</div></div>
-          <div class="stat-card"><div class="stat-num">50+</div><div class="stat-label">Quiz Questions</div></div>
-          <div class="stat-card"><div class="stat-num">5</div><div class="stat-label">Topic Groups</div></div>
+          <div class="stat-card"><div class="stat-num">27</div><div class="stat-label">Algorithms</div></div>
+          <div class="stat-card"><div class="stat-num">50</div><div class="stat-label">Quiz Questions</div></div>
+          <div class="stat-card"><div class="stat-num">6</div><div class="stat-label">Topic Groups</div></div>
           <div class="stat-card"><div class="stat-num">10m</div><div class="stat-label">Max Marks/Q</div></div>
         </div>
       </div>
       <div class="section-title">Browse by Topic Area</div>
       <div class="grid-3" style="margin-bottom:2rem;">
-        <div class="cat-card" onclick="loadTopic('quicksort')"><div class="cat-icon">⚡</div><div class="cat-title" style="color:var(--amber)">Sorting</div><div class="cat-count">6 algorithms → 2 to 10 marks</div></div>
+        <div class="cat-card" onclick="loadTopic('arrays')"><div class="cat-icon">🟦</div><div class="cat-title" style="color:var(--blue)">Arrays</div><div class="cat-count">Insert, Delete, Traverse</div></div>
+        <div class="cat-card" onclick="loadTopic('quicksort')"><div class="cat-icon">⚡</div><div class="cat-title" style="color:var(--amber)">Sorting & Search</div><div class="cat-count">6 algorithms → 2 to 10 marks</div></div>
+        <div class="cat-card" onclick="loadTopic('lldelete_singly')"><div class="cat-icon">🔗</div><div class="cat-title" style="color:var(--red)">Linked Lists</div><div class="cat-count">6 topics → 2 to 10 marks</div></div>
+        <div class="cat-card" onclick="loadTopic('stack_ll')"><div class="cat-icon">📚</div><div class="cat-title" style="color:var(--accent2)">Stack & Queue</div><div class="cat-count">6 topics → 5 to 10 marks</div></div>
         <div class="cat-card" onclick="loadTopic('traversals')"><div class="cat-icon">🌳</div><div class="cat-title" style="color:var(--green)">Trees & AVL</div><div class="cat-count">4 topics → up to 10 marks</div></div>
         <div class="cat-card" onclick="loadTopic('bfs')"><div class="cat-icon">🕸️</div><div class="cat-title" style="color:var(--teal)">Graph Algorithms</div><div class="cat-count">4 algorithms → up to 10 marks</div></div>
-        <div class="cat-card" onclick="loadTopic('llinsert')"><div class="cat-icon">🔗</div><div class="cat-title" style="color:var(--red)">Linked Lists</div><div class="cat-count">3 topics → 2 to 10 marks</div></div>
-        <div class="cat-card" onclick="loadTopic('stack')"><div class="cat-icon">📚</div><div class="cat-title" style="color:var(--accent2)">Stack & Queue</div><div class="cat-count">4 topics → 5 to 10 marks</div></div>
-        <div class="cat-card" onclick="showView('quiz')"><div class="cat-icon">🧠</div><div class="cat-title" style="color:var(--accent3)">Take the Quiz</div><div class="cat-count">Test yourself → 50+ questions</div></div>
       </div>
       <div class="section-title">Mark-Wise Predicted Questions</div>
       <div class="grid-2">
-        <div class="info-box"><strong style="color:var(--green)">2–4 Marks (Short):</strong> LL insert at head, find middle of LL, Binary Search, Bubble & Selection sort complexities, check binary tree, evaluate expression tree.</div>
-        <div class="info-box"><strong style="color:var(--amber)">5–7 Marks (Medium):</strong> Stack push/pop array, circular queue enqueue/dequeue, DFS traversal, BST insert, Insertion sort + complexity, Topological sort.</div>
-        <div class="info-box"><strong style="color:var(--red)">8–10 Marks (Long):</strong> Tower of Hanoi + analysis, Polynomial addition using LL, AVL rotations, Dijkstra's algorithm, Quick sort + partition, Merge sort + complexity, Infix to Postfix.</div>
-        <div class="info-box"><strong style="color:var(--accent2)">Pro Tip:</strong> For long questions, always write the <em>helper function first</em> (e.g., PARTITION before QUICKSORT, MERGE before MERGESORT), then the main algorithm, then complexity analysis.</div>
+        <div class="info-box"><strong style="color:var(--green)">2–4 Marks (Short):</strong> Array operations, LL insert at head, Find middle of LL, Binary Search, Bubble/Selection sort, check binary tree.</div>
+        <div class="info-box"><strong style="color:var(--amber)">5–7 Marks (Medium):</strong> LL Deletions (Singly/Doubly/Circular), Stack/Queue using LL or Arrays, DFS traversal, BST insert, Insertion sort, Topological sort.</div>
+        <div class="info-box"><strong style="color:var(--red)">8–10 Marks (Long):</strong> Tower of Hanoi, Polynomial addition using LL, AVL rotations, Dijkstra's algorithm, Quick sort + partition, Merge sort, Infix to Postfix.</div>
+        <div class="info-box"><strong style="color:var(--accent2)">Pro Tip:</strong> For long questions, always write the <em>helper function first</em> (e.g., PARTITION before QUICKSORT), then the main algorithm, then complexity analysis.</div>
       </div>
     </div>
 
@@ -300,7 +312,7 @@
     <div class="view" id="view-quiz">
       <div class="topic-header">
         <div class="topic-title">Test Yourself 🧠</div>
-        <div class="topic-meta"><span class="badge badge-purple">50+ Questions</span><span class="badge badge-teal">All Topics</span></div>
+        <div class="topic-meta"><span class="badge badge-purple">50 Questions</span><span class="badge badge-teal">All Topics</span></div>
       </div>
       <div id="quiz-container"></div>
     </div>
@@ -308,54 +320,60 @@
     <div class="view" id="view-cheatsheet">
       <div class="topic-header">
         <div class="topic-title">Time Complexity Cheat Sheet</div>
-        <div class="topic-meta"><span class="badge badge-purple">Quick Reference</span></div>
+        <div class="topic-meta"><span class="badge badge-purple">Expanded Quick Reference</span></div>
       </div>
       <div class="cheat-grid">
         <div class="cheat-card">
-          <div class="cheat-card-title" style="color:var(--amber)">⚡ Sorting Algorithms</div>
-          <div class="cheat-row"><span class="cheat-algo">Bubble Sort</span><span class="cheat-tc"><span class="tc-best">O(n)</span> / <span class="tc-avg">O(n²)</span> / <span class="tc-worst">O(n²)</span></span></div>
-          <div class="cheat-row"><span class="cheat-algo">Selection Sort</span><span class="cheat-tc"><span class="tc-best">O(n²)</span> / <span class="tc-avg">O(n²)</span> / <span class="tc-worst">O(n²)</span></span></div>
-          <div class="cheat-row"><span class="cheat-algo">Insertion Sort</span><span class="cheat-tc"><span class="tc-best">O(n)</span> / <span class="tc-avg">O(n²)</span> / <span class="tc-worst">O(n²)</span></span></div>
-          <div class="cheat-row"><span class="cheat-algo">Merge Sort</span><span class="cheat-tc"><span class="tc-best">O(n log n)</span> / <span class="tc-avg">O(n log n)</span> / <span class="tc-worst">O(n log n)</span></span></div>
-          <div class="cheat-row"><span class="cheat-algo">Quick Sort</span><span class="cheat-tc"><span class="tc-best">O(n log n)</span> / <span class="tc-avg">O(n log n)</span> / <span class="tc-worst">O(n²)</span></span></div>
-          <div class="cheat-row"><span class="cheat-algo">Binary Search</span><span class="cheat-tc"><span class="tc-best">O(1)</span> / <span class="tc-avg">O(log n)</span> / <span class="tc-worst">O(log n)</span></span></div>
+          <div class="cheat-card-title" style="color:var(--blue)">🟦 Arrays</div>
+          <div class="cheat-row"><span class="cheat-algo">Access i-th Element</span><span class="cheat-tc"><span class="tc-best">O(1)</span></span></div>
+          <div class="cheat-row"><span class="cheat-algo">Insert at End</span><span class="cheat-tc"><span class="tc-best">O(1)</span></span></div>
+          <div class="cheat-row"><span class="cheat-algo">Insert at Index i</span><span class="cheat-tc"><span class="tc-worst">O(n)</span></span></div>
+          <div class="cheat-row"><span class="cheat-algo">Delete at Index i</span><span class="cheat-tc"><span class="tc-worst">O(n)</span></span></div>
         </div>
         <div class="cheat-card">
-          <div class="cheat-card-title" style="color:var(--green)">🌳 Tree Operations</div>
-          <div class="cheat-row"><span class="cheat-algo">BST Insert</span><span class="cheat-tc"><span class="tc-best">O(log n)</span> / <span class="tc-avg">O(log n)</span> / <span class="tc-worst">O(n)</span></span></div>
-          <div class="cheat-row"><span class="cheat-algo">BST Search</span><span class="cheat-tc"><span class="tc-best">O(1)</span> / <span class="tc-avg">O(log n)</span> / <span class="tc-worst">O(n)</span></span></div>
-          <div class="cheat-row"><span class="cheat-algo">AVL Insert</span><span class="cheat-tc"><span class="tc-best">O(log n)</span> / <span class="tc-avg">O(log n)</span> / <span class="tc-worst">O(log n)</span></span></div>
-          <div class="cheat-row"><span class="cheat-algo">Tree Traversal</span><span class="cheat-tc"><span class="tc-best">O(n)</span> / <span class="tc-avg">O(n)</span> / <span class="tc-worst">O(n)</span></span></div>
+          <div class="cheat-card-title" style="color:var(--amber)">⚡ Sorting Algorithms</div>
+          <div class="cheat-row"><span class="cheat-algo">Bubble / Selection</span><span class="cheat-tc"><span class="tc-worst">O(n²)</span></span></div>
+          <div class="cheat-row"><span class="cheat-algo">Insertion Sort</span><span class="cheat-tc"><span class="tc-best">O(n)</span> / <span class="tc-worst">O(n²)</span></span></div>
+          <div class="cheat-row"><span class="cheat-algo">Merge Sort</span><span class="cheat-tc"><span class="tc-worst">O(n log n)</span></span></div>
+          <div class="cheat-row"><span class="cheat-algo">Quick Sort</span><span class="cheat-tc"><span class="tc-avg">O(n log n)</span> / <span class="tc-worst">O(n²)</span></span></div>
+          <div class="cheat-row"><span class="cheat-algo">Binary Search</span><span class="cheat-tc"><span class="tc-best">O(1)</span> / <span class="tc-worst">O(log n)</span></span></div>
+        </div>
+        <div class="cheat-card">
+          <div class="cheat-card-title" style="color:var(--red)">🔗 Linked List Deletions</div>
+          <div class="cheat-row"><span class="cheat-algo">Singly - Delete Head</span><span class="cheat-tc"><span class="tc-best">O(1)</span></span></div>
+          <div class="cheat-row"><span class="cheat-algo">Singly - Delete Tail</span><span class="cheat-tc"><span class="tc-worst">O(n)</span></span></div>
+          <div class="cheat-row"><span class="cheat-algo">Doubly - Delete Head/Tail</span><span class="cheat-tc"><span class="tc-best">O(1)</span> <span style="font-size:0.65rem;color:var(--text3)">(with tail ptr)</span></span></div>
+          <div class="cheat-row"><span class="cheat-algo">Circular - Delete Head</span><span class="cheat-tc"><span class="tc-worst">O(n)</span></span></div>
+          <div class="cheat-row"><span class="cheat-algo">Delete at Position i</span><span class="cheat-tc"><span class="tc-worst">O(n)</span></span></div>
+        </div>
+        <div class="cheat-card">
+          <div class="cheat-card-title" style="color:var(--accent2)">📚 Stacks & Queues</div>
+          <div class="cheat-row"><span class="cheat-algo">Array Stack Push/Pop</span><span class="cheat-tc"><span class="tc-best">O(1)</span></span></div>
+          <div class="cheat-row"><span class="cheat-algo">LL Stack Push/Pop</span><span class="cheat-tc"><span class="tc-best">O(1)</span></span></div>
+          <div class="cheat-row"><span class="cheat-algo">Array Queue Enq/Deq</span><span class="cheat-tc"><span class="tc-best">O(1)</span></span></div>
+          <div class="cheat-row"><span class="cheat-algo">LL Queue Enq/Deq</span><span class="cheat-tc"><span class="tc-best">O(1)</span> <span style="font-size:0.65rem;color:var(--text3)">(with tail ptr)</span></span></div>
+          <div class="cheat-row"><span class="cheat-algo">Tower of Hanoi</span><span class="cheat-tc"><span class="tc-worst">O(2ⁿ)</span></span></div>
+        </div>
+        <div class="cheat-card">
+          <div class="cheat-card-title" style="color:var(--green)">🌳 Trees & AVL</div>
+          <div class="cheat-row"><span class="cheat-algo">BST Insert/Search</span><span class="cheat-tc"><span class="tc-avg">O(log n)</span> / <span class="tc-worst">O(n)</span></span></div>
+          <div class="cheat-row"><span class="cheat-algo">AVL Insert</span><span class="cheat-tc"><span class="tc-worst">O(log n)</span></span></div>
+          <div class="cheat-row"><span class="cheat-algo">Tree Traversals</span><span class="cheat-tc"><span class="tc-worst">O(n)</span></span></div>
         </div>
         <div class="cheat-card">
           <div class="cheat-card-title" style="color:var(--teal)">🕸️ Graph Algorithms</div>
-          <div class="cheat-row"><span class="cheat-algo">BFS</span><span class="cheat-tc"><span class="tc-worst">O(V + E)</span></span></div>
-          <div class="cheat-row"><span class="cheat-algo">DFS</span><span class="cheat-tc"><span class="tc-worst">O(V + E)</span></span></div>
-          <div class="cheat-row"><span class="cheat-algo">Dijkstra</span><span class="cheat-tc"><span class="tc-worst">O(V²) or O(E log V)</span></span></div>
+          <div class="cheat-row"><span class="cheat-algo">BFS / DFS</span><span class="cheat-tc"><span class="tc-worst">O(V + E)</span></span></div>
           <div class="cheat-row"><span class="cheat-algo">Topological Sort</span><span class="cheat-tc"><span class="tc-worst">O(V + E)</span></span></div>
-        </div>
-        <div class="cheat-card">
-          <div class="cheat-card-title" style="color:var(--accent2)">📚 Stack / Queue / LL</div>
-          <div class="cheat-row"><span class="cheat-algo">Stack Push/Pop</span><span class="cheat-tc"><span class="tc-best">O(1)</span></span></div>
-          <div class="cheat-row"><span class="cheat-algo">Queue Enqueue/Dequeue</span><span class="cheat-tc"><span class="tc-best">O(1)</span></span></div>
-          <div class="cheat-row"><span class="cheat-algo">LL Insert (head)</span><span class="cheat-tc"><span class="tc-best">O(1)</span></span></div>
-          <div class="cheat-row"><span class="cheat-algo">LL Find Middle</span><span class="cheat-tc"><span class="tc-worst">O(n)</span></span></div>
-          <div class="cheat-row"><span class="cheat-algo">Tower of Hanoi</span><span class="cheat-tc"><span class="tc-worst">O(2ⁿ)</span></span></div>
-          <div class="cheat-row"><span class="cheat-algo">Infix → Postfix</span><span class="cheat-tc"><span class="tc-worst">O(n)</span></span></div>
+          <div class="cheat-row"><span class="cheat-algo">Dijkstra (Matrix)</span><span class="cheat-tc"><span class="tc-worst">O(V²)</span></span></div>
         </div>
       </div>
+      
       <div class="section-title" style="margin-top:2rem;">AVL Rotation Quick Reference</div>
       <div class="grid-2">
         <div class="info-box"><strong>LL Rotation (Right Rotation):</strong> Inserted in left subtree of left child. Fix: rotate right at unbalanced node. New root = left child.</div>
         <div class="info-box"><strong>RR Rotation (Left Rotation):</strong> Inserted in right subtree of right child. Fix: rotate left at unbalanced node. New root = right child.</div>
         <div class="info-box"><strong>LR Rotation (Left-Right):</strong> Inserted in right subtree of left child. Fix: first rotate left at left child, then rotate right at unbalanced node.</div>
         <div class="info-box"><strong>RL Rotation (Right-Left):</strong> Inserted in left subtree of right child. Fix: first rotate right at right child, then rotate left at unbalanced node.</div>
-      </div>
-      <div class="section-title" style="margin-top:1.5rem;">Stack Operator Precedence (Infix → Postfix)</div>
-      <div class="info-box">
-        <strong>Priority in stack:</strong> ^ (3) &gt; *, / (2) &gt; +, - (1) &gt; ( (0)<br><br>
-        Rule: Pop from stack while <strong>stack top precedence ≥ current operator precedence</strong> (except for ^ which is right-associative — pop only if strictly greater).
-        <br>Parentheses: push <strong>(</strong> directly; on <strong>)</strong>, pop until matching <strong>(</strong>.
       </div>
     </div>
 
@@ -364,6 +382,381 @@
 
 <script>
 const topics = {
+  arrays: {
+    title: "Array Operations",
+    marks: "2-5 Marks",
+    type: "Arrays",
+    color: "badge-blue",
+    desc: "Arrays store elements in contiguous memory. <strong>Insertion and Deletion</strong> require shifting elements to maintain order, taking O(n) time.",
+    tabs: ["Insert at Index", "Delete at Index"],
+    codes: [
+`<span class="cm">// INSERT in Array at specific index</span>
+<span class="kw">FUNCTION</span> <span class="fn">INSERT_ARRAY</span>(arr, n, capacity, index, value):
+    <span class="kw">IF</span> n <span class="op">≥</span> capacity <span class="kw">THEN</span>
+        <span class="fn">PRINT</span>(<span class="str">"Array is full!"</span>)
+        <span class="kw">RETURN</span> n
+    <span class="kw">END IF</span>
+    
+    <span class="kw">IF</span> index <span class="op">&lt;</span> <span class="num">0</span> <span class="kw">OR</span> index <span class="op">&gt;</span> n <span class="kw">THEN</span>
+        <span class="fn">PRINT</span>(<span class="str">"Invalid index!"</span>)
+        <span class="kw">RETURN</span> n
+    <span class="kw">END IF</span>
+    
+    <span class="cm">// Shift elements to the right to make space</span>
+    <span class="kw">FOR</span> i <span class="op">←</span> n <span class="kw">DOWNTO</span> index <span class="op">+</span> <span class="num">1</span> <span class="kw">DO</span>
+        arr[i] <span class="op">←</span> arr[i - <span class="num">1</span>]
+    <span class="kw">END FOR</span>
+    
+    arr[index] <span class="op">←</span> value    <span class="cm">// Insert value</span>
+    <span class="kw">RETURN</span> n <span class="op">+</span> <span class="num">1</span>          <span class="cm">// Return new size</span>
+<span class="kw">END FUNCTION</span>
+
+<span class="cm">// Time: O(n) worst case (shifting elements)</span>`,
+`<span class="cm">// DELETE from Array at specific index</span>
+<span class="kw">FUNCTION</span> <span class="fn">DELETE_ARRAY</span>(arr, n, index):
+    <span class="kw">IF</span> n <span class="op">≤</span> <span class="num">0</span> <span class="kw">THEN</span>
+        <span class="fn">PRINT</span>(<span class="str">"Array is empty!"</span>)
+        <span class="kw">RETURN</span> n
+    <span class="kw">END IF</span>
+    
+    <span class="kw">IF</span> index <span class="op">&lt;</span> <span class="num">0</span> <span class="kw">OR</span> index <span class="op">≥</span> n <span class="kw">THEN</span>
+        <span class="fn">PRINT</span>(<span class="str">"Invalid index!"</span>)
+        <span class="kw">RETURN</span> n
+    <span class="kw">END IF</span>
+    
+    <span class="cm">// Shift elements to the left to fill gap</span>
+    <span class="kw">FOR</span> i <span class="op">←</span> index <span class="kw">TO</span> n - <span class="num">2</span> <span class="kw">DO</span>
+        arr[i] <span class="op">←</span> arr[i + <span class="num">1</span>]
+    <span class="kw">END FOR</span>
+    
+    <span class="kw">RETURN</span> n - <span class="num">1</span>          <span class="cm">// Return new size</span>
+<span class="kw">END FUNCTION</span>
+
+<span class="cm">// Time: O(n) worst case (shifting elements)</span>`
+    ],
+    tips: ["Insertion requires shifting elements to the RIGHT. Deletion requires shifting to the LEFT.", "Always check bounds (is array full? is array empty? is index valid?) before operating.", "Accessing arr[i] is O(1), but inserting/deleting is O(n)."]
+  },
+
+  lldelete_singly: {
+    title: "Singly Linked List Deletions",
+    marks: "5-7 Marks",
+    type: "Linked List",
+    color: "badge-red",
+    desc: "Deleting nodes in a singly linked list requires adjusting pointers. For tail/position deletion, you must track the <strong>previous</strong> node.",
+    tabs: ["Delete Head", "Delete Tail", "Delete at Pos"],
+    codes: [
+`<span class="cm">// DELETE HEAD of Singly Linked List</span>
+<span class="kw">FUNCTION</span> <span class="fn">DELETE_HEAD</span>(head):
+    <span class="kw">IF</span> head <span class="op">=</span> NULL <span class="kw">THEN</span>
+        <span class="fn">PRINT</span>(<span class="str">"List is empty"</span>)
+        <span class="kw">RETURN</span> NULL
+    <span class="kw">END IF</span>
+    
+    temp <span class="op">←</span> head
+    head <span class="op">←</span> head.next      <span class="cm">// Move head to next node</span>
+    <span class="fn">FREE</span>(temp)            <span class="cm">// Deallocate old head memory</span>
+    
+    <span class="kw">RETURN</span> head
+<span class="kw">END FUNCTION</span>
+
+<span class="cm">// Time: O(1)</span>`,
+`<span class="cm">// DELETE TAIL of Singly Linked List</span>
+<span class="kw">FUNCTION</span> <span class="fn">DELETE_TAIL</span>(head):
+    <span class="kw">IF</span> head <span class="op">=</span> NULL <span class="kw">THEN</span>: <span class="kw">RETURN</span> NULL
+    <span class="kw">IF</span> head.next <span class="op">=</span> NULL <span class="kw">THEN</span>
+        <span class="fn">FREE</span>(head)
+        <span class="kw">RETURN</span> NULL
+    <span class="kw">END IF</span>
+    
+    temp <span class="op">←</span> head
+    <span class="cm">// Traverse to the SECOND LAST node</span>
+    <span class="kw">WHILE</span> temp.next.next <span class="op">≠</span> NULL <span class="kw">DO</span>
+        temp <span class="op">←</span> temp.next
+    <span class="kw">END WHILE</span>
+    
+    <span class="fn">FREE</span>(temp.next)       <span class="cm">// Free the last node</span>
+    temp.next <span class="op">←</span> NULL      <span class="cm">// Set new tail's next to NULL</span>
+    
+    <span class="kw">RETURN</span> head
+<span class="kw">END FUNCTION</span>
+
+<span class="cm">// Time: O(n)</span>`,
+`<span class="cm">// DELETE AT POSITION 'pos' (0-indexed)</span>
+<span class="kw">FUNCTION</span> <span class="fn">DELETE_POS</span>(head, pos):
+    <span class="kw">IF</span> head <span class="op">=</span> NULL <span class="kw">THEN</span>: <span class="kw">RETURN</span> NULL
+    
+    <span class="kw">IF</span> pos <span class="op">=</span> <span class="num">0</span> <span class="kw">THEN</span>: <span class="kw">RETURN</span> <span class="fn">DELETE_HEAD</span>(head)
+    
+    temp <span class="op">←</span> head
+    <span class="cm">// Traverse to the node JUST BEFORE the target</span>
+    <span class="kw">FOR</span> i <span class="op">←</span> <span class="num">0</span> <span class="kw">TO</span> pos - <span class="num">2</span> <span class="kw">DO</span>
+        <span class="kw">IF</span> temp.next <span class="op">=</span> NULL <span class="kw">THEN</span>
+            <span class="fn">PRINT</span>(<span class="str">"Position out of bounds"</span>)
+            <span class="kw">RETURN</span> head
+        <span class="kw">END IF</span>
+        temp <span class="op">←</span> temp.next
+    <span class="kw">END FOR</span>
+    
+    <span class="kw">IF</span> temp.next <span class="op">=</span> NULL <span class="kw">THEN</span>: <span class="kw">RETURN</span> head
+    
+    nodeToDelete <span class="op">←</span> temp.next
+    temp.next <span class="op">←</span> temp.next.next  <span class="cm">// Bypass the node</span>
+    <span class="fn">FREE</span>(nodeToDelete)
+    
+    <span class="kw">RETURN</span> head
+<span class="kw">END FUNCTION</span>
+
+<span class="cm">// Time: O(n)</span>`
+    ],
+    tips: ["Always handle the Edge Case where the list is empty (head = NULL) or has only 1 node.", "For deleting tail, you must stop at the SECOND LAST node (`temp.next.next ≠ NULL`).", "Don't forget to FREE the memory of the deleted node!"]
+  },
+
+  lldelete_doubly: {
+    title: "Doubly Linked List Deletions",
+    marks: "5-7 Marks",
+    type: "Linked List",
+    color: "badge-red",
+    desc: "Doubly Linked Lists have <code>prev</code> and <code>next</code> pointers. Deletion requires updating pointers on <strong>both adjacent nodes</strong>.",
+    tabs: ["Delete Head", "Delete Tail", "Delete at Pos"],
+    codes: [
+`<span class="cm">// DELETE HEAD of Doubly Linked List</span>
+<span class="kw">FUNCTION</span> <span class="fn">DLL_DELETE_HEAD</span>(head):
+    <span class="kw">IF</span> head <span class="op">=</span> NULL <span class="kw">THEN</span>: <span class="kw">RETURN</span> NULL
+    
+    temp <span class="op">←</span> head
+    head <span class="op">←</span> head.next
+    
+    <span class="kw">IF</span> head <span class="op">≠</span> NULL <span class="kw">THEN</span>
+        head.prev <span class="op">←</span> NULL   <span class="cm">// Clear prev link of new head</span>
+    <span class="kw">END IF</span>
+    
+    <span class="fn">FREE</span>(temp)
+    <span class="kw">RETURN</span> head
+<span class="kw">END FUNCTION</span>
+
+<span class="cm">// Time: O(1)</span>`,
+`<span class="cm">// DELETE TAIL of Doubly Linked List</span>
+<span class="kw">FUNCTION</span> <span class="fn">DLL_DELETE_TAIL</span>(head):
+    <span class="kw">IF</span> head <span class="op">=</span> NULL <span class="kw">THEN</span>: <span class="kw">RETURN</span> NULL
+    <span class="kw">IF</span> head.next <span class="op">=</span> NULL <span class="kw">THEN</span>
+        <span class="fn">FREE</span>(head)
+        <span class="kw">RETURN</span> NULL
+    <span class="kw">END IF</span>
+    
+    temp <span class="op">←</span> head
+    <span class="kw">WHILE</span> temp.next <span class="op">≠</span> NULL <span class="kw">DO</span>
+        temp <span class="op">←</span> temp.next   <span class="cm">// Traverse to last node</span>
+    <span class="kw">END WHILE</span>
+    
+    temp.prev.next <span class="op">←</span> NULL  <span class="cm">// Second last node's next = NULL</span>
+    <span class="fn">FREE</span>(temp)
+    
+    <span class="kw">RETURN</span> head
+<span class="kw">END FUNCTION</span>
+
+<span class="cm">// Time: O(n) without tail pointer, O(1) if tail pointer exists</span>`,
+`<span class="cm">// DELETE AT POSITION 'pos' (Doubly LL)</span>
+<span class="kw">FUNCTION</span> <span class="fn">DLL_DELETE_POS</span>(head, pos):
+    <span class="kw">IF</span> head <span class="op">=</span> NULL <span class="kw">THEN</span>: <span class="kw">RETURN</span> NULL
+    <span class="kw">IF</span> pos <span class="op">=</span> <span class="num">0</span> <span class="kw">THEN</span>: <span class="kw">RETURN</span> <span class="fn">DLL_DELETE_HEAD</span>(head)
+    
+    temp <span class="op">←</span> head
+    <span class="kw">FOR</span> i <span class="op">←</span> <span class="num">0</span> <span class="kw">TO</span> pos - <span class="num">1</span> <span class="kw">DO</span>
+        <span class="kw">IF</span> temp <span class="op">=</span> NULL <span class="kw">THEN</span>: <span class="kw">RETURN</span> head
+        temp <span class="op">←</span> temp.next
+    <span class="kw">END FOR</span>
+    
+    <span class="kw">IF</span> temp <span class="op">=</span> NULL <span class="kw">THEN</span>: <span class="kw">RETURN</span> head
+    
+    <span class="cm">// temp is the node to delete</span>
+    temp.prev.next <span class="op">←</span> temp.next
+    
+    <span class="kw">IF</span> temp.next <span class="op">≠</span> NULL <span class="kw">THEN</span>
+        temp.next.prev <span class="op">←</span> temp.prev
+    <span class="kw">END IF</span>
+    
+    <span class="fn">FREE</span>(temp)
+    <span class="kw">RETURN</span> head
+<span class="kw">END FUNCTION</span>`
+    ],
+    tips: ["In Doubly LL, `node.prev.next = node.next` and `node.next.prev = node.prev`.", "Always check `if (node.next != NULL)` before accessing `node.next.prev`.", "Much easier to delete at a specific node if you already have its pointer, because you don't need to traverse from head!"]
+  },
+
+  lldelete_circular: {
+    title: "Circular Linked List Deletions",
+    marks: "5-7 Marks",
+    type: "Linked List",
+    color: "badge-red",
+    desc: "In a Circular LL, the last node points back to the head. Deleting the head requires <strong>updating the last node's next pointer</strong>.",
+    tabs: ["Delete Head", "Delete Tail"],
+    codes: [
+`<span class="cm">// DELETE HEAD of Circular Singly Linked List</span>
+<span class="kw">FUNCTION</span> <span class="fn">CLL_DELETE_HEAD</span>(head):
+    <span class="kw">IF</span> head <span class="op">=</span> NULL <span class="kw">THEN</span>: <span class="kw">RETURN</span> NULL
+    
+    <span class="cm">// Only one node in list</span>
+    <span class="kw">IF</span> head.next <span class="op">=</span> head <span class="kw">THEN</span>
+        <span class="fn">FREE</span>(head)
+        <span class="kw">RETURN</span> NULL
+    <span class="kw">END IF</span>
+    
+    curr <span class="op">←</span> head
+    <span class="kw">WHILE</span> curr.next <span class="op">≠</span> head <span class="kw">DO</span>
+        curr <span class="op">←</span> curr.next    <span class="cm">// Traverse to last node</span>
+    <span class="kw">END WHILE</span>
+    
+    temp <span class="op">←</span> head
+    curr.next <span class="op">←</span> head.next   <span class="cm">// Last node points to new head</span>
+    head <span class="op">←</span> head.next        <span class="cm">// Update head</span>
+    <span class="fn">FREE</span>(temp)
+    
+    <span class="kw">RETURN</span> head
+<span class="kw">END FUNCTION</span>
+
+<span class="cm">// Time: O(n) to find the last node. </span>
+<span class="cm">// Alternate O(1) trick: Swap data of head & head.next, then delete head.next.</span>`,
+`<span class="cm">// DELETE TAIL of Circular Singly Linked List</span>
+<span class="kw">FUNCTION</span> <span class="fn">CLL_DELETE_TAIL</span>(head):
+    <span class="kw">IF</span> head <span class="op">=</span> NULL <span class="kw">THEN</span>: <span class="kw">RETURN</span> NULL
+    <span class="kw">IF</span> head.next <span class="op">=</span> head <span class="kw">THEN</span>
+        <span class="fn">FREE</span>(head)
+        <span class="kw">RETURN</span> NULL
+    <span class="kw">END IF</span>
+    
+    curr <span class="op">←</span> head
+    prev <span class="op">←</span> NULL
+    
+    <span class="cm">// Traverse until curr is the last node</span>
+    <span class="kw">WHILE</span> curr.next <span class="op">≠</span> head <span class="kw">DO</span>
+        prev <span class="op">←</span> curr
+        curr <span class="op">←</span> curr.next
+    <span class="kw">END WHILE</span>
+    
+    prev.next <span class="op">←</span> head       <span class="cm">// Second last points to head</span>
+    <span class="fn">FREE</span>(curr)
+    
+    <span class="kw">RETURN</span> head
+<span class="kw">END FUNCTION</span>
+
+<span class="cm">// Time: O(n)</span>`
+    ],
+    tips: ["Loop termination condition for Circular LL: `while (curr.next != head)`", "If you delete the head, you MUST find the tail and update `tail.next = new_head`.", "Trick to delete head in O(1): Copy `head.next.data` into `head.data`, then delete `head.next`. This avoids traversing to the tail!"]
+  },
+
+  stack_ll: {
+    title: "Stack via Linked List",
+    marks: "5-7 Marks",
+    type: "Stack",
+    color: "badge-purple",
+    desc: "A Stack can be implemented using a Singly Linked List. PUSH is exactly <strong>Insert at Head</strong>. POP is exactly <strong>Delete at Head</strong>. This ensures O(1) time complexity.",
+    tabs: ["PUSH", "POP"],
+    codes: [
+`<span class="cm">// STACK PUSH using Linked List (Insert at Head)</span>
+<span class="kw">STRUCT</span> Node:
+    data
+    next
+<span class="kw">END STRUCT</span>
+
+top <span class="op">←</span> NULL    <span class="cm">// Stack is initially empty</span>
+
+<span class="kw">FUNCTION</span> <span class="fn">PUSH</span>(value):
+    newNode <span class="op">←</span> <span class="fn">NEW</span> Node
+    <span class="kw">IF</span> newNode <span class="op">=</span> NULL <span class="kw">THEN</span>
+        <span class="fn">PRINT</span>(<span class="str">"Heap Overflow"</span>)
+        <span class="kw">RETURN</span>
+    <span class="kw">END IF</span>
+    
+    newNode.data <span class="op">←</span> value
+    newNode.next <span class="op">←</span> top
+    top <span class="op">←</span> newNode
+    
+    <span class="fn">PRINT</span>(<span class="str">"Pushed:"</span>, value)
+<span class="kw">END FUNCTION</span>
+
+<span class="cm">// Time: O(1)</span>`,
+`<span class="cm">// STACK POP using Linked List (Delete at Head)</span>
+<span class="kw">FUNCTION</span> <span class="fn">POP</span>():
+    <span class="kw">IF</span> top <span class="op">=</span> NULL <span class="kw">THEN</span>
+        <span class="fn">PRINT</span>(<span class="str">"Stack Underflow"</span>)
+        <span class="kw">RETURN</span> NULL
+    <span class="kw">END IF</span>
+    
+    temp <span class="op">←</span> top
+    val <span class="op">←</span> temp.data
+    
+    top <span class="op">←</span> top.next
+    <span class="fn">FREE</span>(temp)
+    
+    <span class="kw">RETURN</span> val
+<span class="kw">END FUNCTION</span>
+
+<span class="kw">FUNCTION</span> <span class="fn">PEEK</span>():
+    <span class="kw">IF</span> top <span class="op">=</span> NULL <span class="kw">THEN</span>: <span class="kw">RETURN</span> NULL
+    <span class="kw">RETURN</span> top.data
+<span class="kw">END FUNCTION</span>
+
+<span class="cm">// Time: O(1)</span>`
+    ],
+    tips: ["Stack using LL does NOT have a fixed size, so 'Stack Overflow' only happens if the system runs out of memory (Heap Overflow).", "Always operate at the HEAD of the linked list to guarantee O(1) performance.", "`top` acts exactly as the `head` pointer in a normal linked list."]
+  },
+
+  queue_ll: {
+    title: "Queue via Linked List",
+    marks: "5-7 Marks",
+    type: "Stack",
+    color: "badge-purple",
+    desc: "A Queue can be implemented using a Singly Linked List with two pointers: <code>front</code> (head) and <code>rear</code> (tail). ENQUEUE is <strong>Insert at Tail</strong>. DEQUEUE is <strong>Delete at Head</strong>.",
+    tabs: ["ENQUEUE", "DEQUEUE"],
+    codes: [
+`<span class="cm">// QUEUE ENQUEUE using Linked List (Insert at Tail)</span>
+front <span class="op">←</span> NULL
+rear <span class="op">←</span> NULL
+
+<span class="kw">FUNCTION</span> <span class="fn">ENQUEUE</span>(value):
+    newNode <span class="op">←</span> <span class="fn">NEW</span> Node
+    newNode.data <span class="op">←</span> value
+    newNode.next <span class="op">←</span> NULL
+    
+    <span class="cm">// If queue is empty, new node is both front & rear</span>
+    <span class="kw">IF</span> rear <span class="op">=</span> NULL <span class="kw">THEN</span>
+        front <span class="op">←</span> newNode
+        rear <span class="op">←</span> newNode
+        <span class="kw">RETURN</span>
+    <span class="kw">END IF</span>
+    
+    <span class="cm">// Add to tail and update rear</span>
+    rear.next <span class="op">←</span> newNode
+    rear <span class="op">←</span> newNode
+<span class="kw">END FUNCTION</span>
+
+<span class="cm">// Time: O(1) because we keep a 'rear' pointer</span>`,
+`<span class="cm">// QUEUE DEQUEUE using Linked List (Delete at Head)</span>
+<span class="kw">FUNCTION</span> <span class="fn">DEQUEUE</span>():
+    <span class="kw">IF</span> front <span class="op">=</span> NULL <span class="kw">THEN</span>
+        <span class="fn">PRINT</span>(<span class="str">"Queue Underflow"</span>)
+        <span class="kw">RETURN</span> NULL
+    <span class="kw">END IF</span>
+    
+    temp <span class="op">←</span> front
+    val <span class="op">←</span> temp.data
+    
+    front <span class="op">←</span> front.next
+    
+    <span class="cm">// If queue becomes empty, update rear to NULL</span>
+    <span class="kw">IF</span> front <span class="op">=</span> NULL <span class="kw">THEN</span>
+        rear <span class="op">←</span> NULL
+    <span class="kw">END IF</span>
+    
+    <span class="fn">FREE</span>(temp)
+    <span class="kw">RETURN</span> val
+<span class="kw">END FUNCTION</span>
+
+<span class="cm">// Time: O(1)</span>`
+    ],
+    tips: ["To make Enqueue O(1), you MUST maintain a `rear` pointer.", "Dequeue happens at `front` (O(1)).", "Edge case to remember: When dequeuing the last element, you must set BOTH `front` and `rear` back to NULL."]
+  },
+
+  // Existing Topics
   quicksort: {
     title: "Quick Sort",
     marks: "8-10 Marks",
@@ -838,7 +1231,7 @@ const topics = {
   },
 
   stack: {
-    title: "Stack — Push & Pop",
+    title: "Stack — Push & Pop (Array)",
     marks: "5-7 Marks",
     type: "Stack",
     color: "badge-purple",
@@ -888,7 +1281,7 @@ top <span class="op">←</span> <span class="op">-</span><span class="num">1</sp
   },
 
   queue: {
-    title: "Circular Queue",
+    title: "Circular Queue (Array)",
     marks: "5-7 Marks",
     type: "Stack",
     color: "badge-purple",
@@ -1226,160 +1619,6 @@ front <span class="op">←</span> <span class="op">-</span><span class="num">1</
     tips: ["BST rule: left < root < right at every node.","Worst case O(n) happens when inserting in sorted order — creates a skewed tree (like a linked list).","AVL tree was invented specifically to prevent this worst case.","In-order traversal of BST always yields sorted output — say this in your exam!"]
   },
 
-  binsearch: {
-    title: "Binary Search",
-    marks: "2-4 Marks",
-    type: "Searching",
-    color: "badge-amber",
-    desc: "Search a <strong>sorted array</strong> by repeatedly halving the search space. Compare target with mid element and eliminate half each time.",
-    tabs: ["Pseudocode"],
-    codes: [
-`<span class="cm">// BINARY SEARCH — requires SORTED array</span>
-<span class="kw">FUNCTION</span> <span class="fn">BINARY_SEARCH</span>(arr, n, target):
-    low <span class="op">←</span> <span class="num">0</span>
-    high <span class="op">←</span> n <span class="op">-</span> <span class="num">1</span>
-    
-    <span class="kw">WHILE</span> low <span class="op">≤</span> high <span class="kw">DO</span>
-        mid <span class="op">←</span> (low <span class="op">+</span> high) <span class="op">/</span> <span class="num">2</span>   <span class="cm">// integer division</span>
-        
-        <span class="kw">IF</span> arr[mid] <span class="op">=</span> target <span class="kw">THEN</span>
-            <span class="kw">RETURN</span> mid               <span class="cm">// Found! Return index</span>
-        
-        <span class="kw">ELSE IF</span> arr[mid] <span class="op">&lt;</span> target <span class="kw">THEN</span>
-            low <span class="op">←</span> mid <span class="op">+</span> <span class="num">1</span>            <span class="cm">// target is in right half</span>
-        
-        <span class="kw">ELSE</span>
-            high <span class="op">←</span> mid <span class="op">-</span> <span class="num">1</span>          <span class="cm">// target is in left half</span>
-        <span class="kw">END IF</span>
-    <span class="kw">END WHILE</span>
-    
-    <span class="kw">RETURN</span> <span class="op">-</span><span class="num">1</span>                     <span class="cm">// Not found</span>
-<span class="kw">END FUNCTION</span>
-
-<span class="cm">// Best Case:  O(1) — target is middle element</span>
-<span class="cm">// Worst Case: O(log n) — halved each iteration</span>
-<span class="cm">// Space: O(1) iterative, O(log n) recursive</span>`
-    ],
-    tips: ["Binary Search REQUIRES the array to be SORTED first.","Best O(1) — target found at first mid. Worst O(log n) — target not found.","mid = (low + high) / 2 (integer division, always).","If arr[mid] < target → move low up. If arr[mid] > target → move high down.","Return -1 when low > high (element not found)."]
-  },
-
-  bubblesort: {
-    title: "Bubble Sort",
-    marks: "2-4 Marks",
-    type: "Sorting",
-    color: "badge-amber",
-    desc: "Repeatedly compares <strong>adjacent elements</strong> and swaps them if they're in wrong order. After each pass, the largest element 'bubbles' to the end.",
-    tabs: ["Pseudocode"],
-    codes: [
-`<span class="cm">// BUBBLE SORT — adjacent element comparison</span>
-<span class="kw">FUNCTION</span> <span class="fn">BUBBLE_SORT</span>(arr, n):
-    <span class="kw">FOR</span> i <span class="op">←</span> <span class="num">0</span> <span class="kw">TO</span> n<span class="op">-</span><span class="num">2</span> <span class="kw">DO</span>            <span class="cm">// n-1 passes</span>
-        swapped <span class="op">←</span> FALSE             <span class="cm">// optimization flag</span>
-        
-        <span class="kw">FOR</span> j <span class="op">←</span> <span class="num">0</span> <span class="kw">TO</span> n<span class="op">-</span>i<span class="op">-</span><span class="num">2</span> <span class="kw">DO</span>      <span class="cm">// last i are sorted</span>
-            <span class="kw">IF</span> arr[j] <span class="op">&gt;</span> arr[j<span class="op">+</span><span class="num">1</span>] <span class="kw">THEN</span>
-                <span class="fn">SWAP</span>(arr[j], arr[j<span class="op">+</span><span class="num">1</span>])
-                swapped <span class="op">←</span> TRUE
-            <span class="kw">END IF</span>
-        <span class="kw">END FOR</span>
-        
-        <span class="cm">// If no swap in this pass → array is sorted</span>
-        <span class="kw">IF</span> swapped <span class="op">=</span> FALSE <span class="kw">THEN</span>: <span class="kw">BREAK</span>
-    <span class="kw">END FOR</span>
-<span class="kw">END FUNCTION</span>
-
-<span class="cm">// Best Case:  O(n) — already sorted (with swap flag)</span>
-<span class="cm">// Avg Case:   O(n²)</span>
-<span class="cm">// Worst Case: O(n²) — reverse sorted</span>
-<span class="cm">// Space: O(1) — in-place sorting</span>
-<span class="cm">// Stable: YES</span>`
-    ],
-    tips: ["Without the swap flag: always O(n²). WITH the swap flag: best case becomes O(n).","Stable sort — equal elements maintain relative order.","After i-th pass, the last i elements are in their final sorted position.","Rarely used in practice — O(n²) is too slow for large datasets."]
-  },
-
-  selectsort: {
-    title: "Selection Sort",
-    marks: "2-4 Marks",
-    type: "Sorting",
-    color: "badge-amber",
-    desc: "Find the <strong>minimum element</strong> in the unsorted portion and place it at the beginning. Repeat for remaining unsorted portion.",
-    tabs: ["Pseudocode"],
-    codes: [
-`<span class="cm">// SELECTION SORT — find minimum, place at front</span>
-<span class="kw">FUNCTION</span> <span class="fn">SELECTION_SORT</span>(arr, n):
-    <span class="kw">FOR</span> i <span class="op">←</span> <span class="num">0</span> <span class="kw">TO</span> n<span class="op">-</span><span class="num">2</span> <span class="kw">DO</span>
-        <span class="cm">// Find minimum in arr[i..n-1]</span>
-        minIdx <span class="op">←</span> i
-        
-        <span class="kw">FOR</span> j <span class="op">←</span> i<span class="op">+</span><span class="num">1</span> <span class="kw">TO</span> n<span class="op">-</span><span class="num">1</span> <span class="kw">DO</span>
-            <span class="kw">IF</span> arr[j] <span class="op">&lt;</span> arr[minIdx] <span class="kw">THEN</span>
-                minIdx <span class="op">←</span> j
-            <span class="kw">END IF</span>
-        <span class="kw">END FOR</span>
-        
-        <span class="cm">// Swap minimum with first unsorted element</span>
-        <span class="kw">IF</span> minIdx <span class="op">≠</span> i <span class="kw">THEN</span>
-            <span class="fn">SWAP</span>(arr[i], arr[minIdx])
-        <span class="kw">END IF</span>
-    <span class="kw">END FOR</span>
-<span class="kw">END FUNCTION</span>
-
-<span class="cm">// Best Case:  O(n²) — always scans full unsorted part</span>
-<span class="cm">// Avg Case:   O(n²)</span>
-<span class="cm">// Worst Case: O(n²)</span>
-<span class="cm">// Space: O(1) — in-place</span>
-<span class="cm">// Stable: NO (swapping can disrupt equal elements)</span>`
-    ],
-    tips: ["Selection Sort always O(n²) — even if array is sorted! It always does the full scan.","Makes at most n-1 swaps — useful when swaps are expensive.","NOT stable — swapping non-adjacent elements can change relative order.","Key difference from Bubble Sort: Bubble swaps as it goes, Selection finds min first then swaps."]
-  },
-
-  insertsort: {
-    title: "Insertion Sort",
-    marks: "5-7 Marks",
-    type: "Sorting",
-    color: "badge-amber",
-    desc: "Build sorted array one element at a time. For each element, <strong>insert it into its correct position</strong> in the already-sorted portion by shifting larger elements right.",
-    tabs: ["Pseudocode","Complexity"],
-    codes: [
-`<span class="cm">// INSERTION SORT — build sorted portion left to right</span>
-<span class="kw">FUNCTION</span> <span class="fn">INSERTION_SORT</span>(arr, n):
-    <span class="kw">FOR</span> i <span class="op">←</span> <span class="num">1</span> <span class="kw">TO</span> n<span class="op">-</span><span class="num">1</span> <span class="kw">DO</span>
-        key <span class="op">←</span> arr[i]             <span class="cm">// element to be inserted</span>
-        j <span class="op">←</span> i <span class="op">-</span> <span class="num">1</span>
-        
-        <span class="cm">// Shift elements greater than key to the right</span>
-        <span class="kw">WHILE</span> j <span class="op">≥</span> <span class="num">0</span> <span class="kw">AND</span> arr[j] <span class="op">&gt;</span> key <span class="kw">DO</span>
-            arr[j<span class="op">+</span><span class="num">1</span>] <span class="op">←</span> arr[j]
-            j <span class="op">←</span> j <span class="op">-</span> <span class="num">1</span>
-        <span class="kw">END WHILE</span>
-        
-        arr[j<span class="op">+</span><span class="num">1</span>] <span class="op">←</span> key             <span class="cm">// place key in correct spot</span>
-    <span class="kw">END FOR</span>
-<span class="kw">END FUNCTION</span>
-
-<span class="cm">// Analogy: Sorting playing cards in hand</span>
-<span class="cm">// arr[0..i-1] is always sorted</span>
-<span class="cm">// arr[i..n-1] is unsorted portion</span>`,
-`<span class="cm">// COMPLEXITY ANALYSIS</span>
-<span class="cm">// Best Case:  O(n)  — already sorted, inner loop never runs</span>
-<span class="cm">// Avg Case:   O(n²) — each element inserted in middle on avg</span>
-<span class="cm">// Worst Case: O(n²) — reverse sorted, max inner loop iterations</span>
-<span class="cm">// Space:      O(1)  — in-place</span>
-<span class="cm">// Stable:     YES</span>
-
-<span class="cm">// Average case calculation:</span>
-<span class="cm">// For element at position i, avg comparisons = i/2</span>
-<span class="cm">// Total = Σ(i/2) for i=1 to n-1</span>
-<span class="cm">//       = (n-1)n/4 = O(n²)</span>
-
-<span class="cm">// Insertion sort is efficient for:</span>
-<span class="cm">// - Nearly sorted arrays</span>
-<span class="cm">// - Small datasets</span>
-<span class="cm">// - Online algorithms (elements arrive one by one)</span>`
-    ],
-    tips: ["Best case O(n) happens when array is already sorted — inner while loop never executes.","Like sorting cards: pick next card, slide it left until it's in the right spot.","Stable and in-place. More efficient than Bubble/Selection for nearly-sorted data.","For average case: each element needs to be compared with half the sorted portion on average."]
-  },
-
   polyadd: {
     title: "Polynomial Addition (LL)",
     marks: "8-10 Marks",
@@ -1514,7 +1753,38 @@ const quizQuestions = [
   { q:"Which tree traversal is used to evaluate an expression tree?", opts:["Pre-order","In-order","Post-order","Level-order"], ans:2, exp:"Post-order (Left → Right → Root) evaluates children first, then applies the operator at root. Essential for bottom-up evaluation." },
   { q:"What is the time complexity of Dijkstra's algorithm with an adjacency matrix?", opts:["O(E log V)","O(V + E)","O(V²)","O(V log V)"], ans:2, exp:"With adjacency matrix: O(V²) since we scan all V vertices to find minimum each of V iterations. With min-heap: O(E log V)." },
   { q:"In BST insertion, worst case O(n) occurs when:", opts:["Tree is balanced","Elements are inserted randomly","Elements are inserted in sorted order","Tree has only left children"], ans:2, exp:"Inserting in sorted order creates a skewed tree (like a linked list), making every insertion traverse all existing nodes." },
-  { q:"Which of these correctly describes Infix operator precedence for the stack?", opts:["( has highest priority","^ has highest priority, then *, /, then +, -","+ and - have highest priority","All operators have equal priority"], ans:1, exp:"Precedence: ^ (3) > *, / (2) > +, - (1). '(' has effective priority 0 inside the stack (doesn't pop other operators)." }
+  { q:"Which of these correctly describes Infix operator precedence for the stack?", opts:["( has highest priority","^ has highest priority, then *, /, then +, -","+ and - have highest priority","All operators have equal priority"], ans:1, exp:"Precedence: ^ (3) > *, / (2) > +, - (1). '(' has effective priority 0 inside the stack (doesn't pop other operators)." },
+  // Adding 30 new questions below
+  { q:"What is the time complexity to insert an element at index 'i' in an array of size 'n'?", opts:["O(1)", "O(log n)", "O(n)", "O(n²)"], ans:2, exp:"O(n). You must shift all elements from index 'i' to the end of the array one position to the right." },
+  { q:"In a Doubly Linked List, what is required to delete a node given a pointer directly to that node?", opts:["Traversal from head", "Traversal from tail", "No traversal", "Two passes"], ans:2, exp:"No traversal needed. You can use node.prev.next = node.next and node.next.prev = node.prev in O(1) time." },
+  { q:"If you implement a Queue using a Linked List, which end should be the 'front' for O(1) operations?", opts:["The tail", "The head", "The middle", "Doesn't matter"], ans:1, exp:"The head should be the front (Dequeue) and the tail should be the rear (Enqueue), assuming you maintain a tail pointer." },
+  { q:"What happens when you delete the ONLY node in a circular linked list?", opts:["head becomes NULL", "head points to itself", "segmentation fault", "list size becomes 1"], ans:0, exp:"If head.next == head, deleting the node leaves the list empty, so head must be explicitly set to NULL." },
+  { q:"Which data structure is most appropriate to implement the Tower of Hanoi?", opts:["Queue", "Linked List", "Stack", "Binary Tree"], ans:2, exp:"The Tower of Hanoi relies heavily on recursion, which uses the system call Stack. The pegs themselves act as stacks." },
+  { q:"Deleting the tail node of a singly linked list requires a time complexity of:", opts:["O(1)", "O(n)", "O(log n)", "O(n²)"], ans:1, exp:"O(n). Even with a tail pointer, you must traverse from the head to find the second-to-last node to update its next pointer to NULL." },
+  { q:"In a Stack implemented with a Linked List, where does the PUSH operation occur?", opts:["At the tail", "At the head", "At the middle", "At the end"], ans:1, exp:"At the head. Pushing at the head ensures O(1) time complexity without needing to traverse the list." },
+  { q:"What is the time complexity of Binary Search in the BEST case?", opts:["O(log n)", "O(1)", "O(n)", "O(n log n)"], ans:1, exp:"O(1). The best case happens when the target element is exactly at the middle of the array on the first check." },
+  { q:"Which array operation takes O(1) time?", opts:["Insert at beginning", "Delete at index 0", "Accessing arr[i]", "Searching for value x"], ans:2, exp:"Array access via index is O(1) because memory addresses can be calculated directly using pointer arithmetic." },
+  { q:"To add two polynomials using linked lists, how should the nodes be ordered?", opts:["Increasing exponents", "Decreasing exponents", "Increasing coefficients", "Random order"], ans:1, exp:"Decreasing exponents (e.g., x^4 then x^2 then x^0). This allows matching terms efficiently from head to tail." },
+  { q:"In an AVL tree, what does an 'LR' rotation mean?", opts:["Left rotation then Right rotation", "Rotate left child then rotate root left", "Left rotation only", "Right rotation then Left rotation"], ans:0, exp:"First a Left rotation on the left child, then a Right rotation on the unbalanced node itself." },
+  { q:"DFS uses which data structure internally if implemented iteratively?", opts:["Queue", "Priority Queue", "Stack", "Deque"], ans:2, exp:"DFS uses a Stack (LIFO) to explore deeply before backtracking." },
+  { q:"Topological sorting using Kahn's algorithm relies on calculating what property of vertices?", opts:["Out-degree", "In-degree", "Weights", "Path length"], ans:1, exp:"Kahn's algorithm pushes vertices with an in-degree of 0 into a queue." },
+  { q:"What is the time complexity of finding the minimum element in an unsorted Array?", opts:["O(1)", "O(log n)", "O(n)", "O(n²)"], ans:2, exp:"O(n). You must check every single element in the unsorted array to guarantee finding the minimum." },
+  { q:"Insertion Sort is best suited for:", opts:["Large random arrays", "Reverse sorted arrays", "Nearly sorted arrays", "Arrays with many duplicates"], ans:2, exp:"Nearly sorted arrays. If the array is mostly sorted, the inner loop rarely runs, giving an almost O(n) performance." },
+  { q:"A complete binary tree with N nodes has a height of roughly:", opts:["O(n)", "O(log n)", "O(n log n)", "O(1)"], ans:1, exp:"O(log n). A complete binary tree is optimally balanced, minimizing its height." },
+  { q:"Which sorting algorithm uses a 'divide and conquer' strategy but does NOT guarantee O(n log n) worst case?", opts:["Merge Sort", "Quick Sort", "Heap Sort", "Insertion Sort"], ans:1, exp:"Quick Sort is divide and conquer, but its worst case degrades to O(n²) if poorly partitioned." },
+  { q:"What does a topological sort of a graph represent?", opts:["Shortest path", "Cycle presence", "Linear ordering of dependencies", "Minimum spanning tree"], ans:2, exp:"It provides a linear sequence where for every directed edge U→V, U appears before V (used for scheduling tasks)." },
+  { q:"If you implement a Circular Queue using an array, how do you compute the next position for 'rear'?", opts:["rear + 1", "(rear + 1) % MAX", "rear - 1", "(rear + 1) / MAX"], ans:1, exp:"(rear + 1) % MAX. Modulo arithmetic wraps the index back to 0 when it reaches the maximum size." },
+  { q:"When deleting a node from a Doubly Linked List, what must you do if the node is the head?", opts:["node.prev.next = node.next", "Update head = head.next and set head.prev = NULL", "Traverse to the tail", "Set node.next.next = NULL"], ans:1, exp:"Update the head pointer to the next node, and ensure the new head's prev pointer is set to NULL." },
+  { q:"In polynomial addition using linked lists, what happens if p1.exp == p2.exp?", opts:["Skip both nodes", "Add coefficients and create a new node if sum != 0", "Multiply coefficients", "Keep p1 node, discard p2"], ans:1, exp:"Add their coefficients. If the sum is 0 (terms cancel out), do not add a node to the result list." },
+  { q:"For Dijkstra's algorithm to work correctly, edge weights must be:", opts:["Positive or zero", "Strictly positive", "Negative", "All equal"], ans:0, exp:"Non-negative (positive or zero). Dijkstra's greedy choice fails if negative weight edges exist." },
+  { q:"Which traversal of an Expression Tree produces Reverse Polish Notation (Postfix)?", opts:["In-order", "Pre-order", "Post-order", "Level-order"], ans:2, exp:"Post-order traversal evaluates children before the parent operator, perfectly matching Postfix notation." },
+  { q:"What is the space complexity of an iterative DFS implementation?", opts:["O(1)", "O(V)", "O(E)", "O(V²)"], ans:1, exp:"O(V) to store the visited array and the maximum size of the explicit stack." },
+  { q:"How do you detect if a Circular Queue is EMPTY?", opts:["front == rear", "front == -1", "(rear + 1) % MAX == front", "rear == -1"], ans:1, exp:"front == -1 is the standard condition to denote an empty circular queue." },
+  { q:"Which linked list allows traversal in both forward and backward directions?", opts:["Singly Linked List", "Circular Singly Linked List", "Doubly Linked List", "None"], ans:2, exp:"A Doubly Linked List maintains both 'next' and 'prev' pointers for bidirectional traversal." },
+  { q:"Bubble sort requires how many passes for an array of size N in the worst case?", opts:["N", "N - 1", "N / 2", "log N"], ans:1, exp:"N - 1 passes. Each pass places the next largest element in its correct final position." },
+  { q:"What is the primary advantage of a Linked List over an Array?", opts:["O(1) access time", "Contiguous memory", "Dynamic size and O(1) insertions/deletions at known nodes", "Cache friendliness"], ans:2, exp:"Linked lists can grow/shrink dynamically and allow O(1) insertion/deletion if you have the pointer, unlike arrays which require shifting." },
+  { q:"If an AVL tree node has left subtree height 4 and right subtree height 2, what is its balance factor?", opts:["-2", "2", "6", "0"], ans:1, exp:"Balance factor = height(left) - height(right) = 4 - 2 = 2. This node is unbalanced." },
+  { q:"What happens to the time complexity of Quick Sort if the array is already sorted?", opts:["O(n)", "O(n log n)", "O(n²)", "O(log n)"], ans:2, exp:"If you pick the first or last element as pivot in a sorted array, the partitions are extremely unbalanced, leading to O(n²) worst case." }
 ];
 
 let currentQ = 0, score = 0, answered = false, shuffled = [];
@@ -1526,7 +1796,7 @@ function showView(v) {
   if(event && event.target.classList.contains('nav-btn')) event.target.classList.add('active');
   
   if (v === 'quiz' && shuffled.length === 0) initQuiz();
-  closeSidebar(); // Close sidebar if navigating on mobile
+  closeSidebar();
 }
 
 function loadTopic(id) {
@@ -1540,7 +1810,13 @@ function loadTopic(id) {
   let codesHtml = t.codes.map((code, i) => `<div class="sub-content ${i===0?'active':''}" id="sub-${i}"><div class="code-block"><button class="copy-btn" onclick="copyCode(this)">Copy</button><pre>${code}</pre></div></div>`).join('');
   let tipsHtml = t.tips.map(tip => `<li>${tip}</li>`).join('');
   let marksColor = t.color;
-  let typeColor = t.type === 'Divide & Conquer' ? 'badge-amber' : t.type === 'Trees' ? 'badge-green' : t.type === 'Graphs' ? 'badge-teal' : 'badge-purple';
+  
+  let typeColor = 'badge-purple';
+  if(t.type === 'Divide & Conquer' || t.type === 'Sorting' || t.type === 'Searching') typeColor = 'badge-amber';
+  if(t.type === 'Trees') typeColor = 'badge-green';
+  if(t.type === 'Graphs') typeColor = 'badge-teal';
+  if(t.type === 'Linked List') typeColor = 'badge-red';
+  if(t.type === 'Arrays') typeColor = 'badge-blue';
 
   document.getElementById('topic-content').innerHTML = `
     <div class="topic-header">
@@ -1557,7 +1833,7 @@ function loadTopic(id) {
     <div class="section-title">Exam Tips</div>
     <ul class="tips-list">${tipsHtml}</ul>
   `;
-  closeSidebar(); // Close sidebar if navigating on mobile
+  closeSidebar();
 }
 
 function showViewDirect(v) {
@@ -1565,7 +1841,7 @@ function showViewDirect(v) {
   document.getElementById('view-' + v).classList.add('active');
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b => { if(b.textContent.toLowerCase().includes(v.substring(0,4))) b.classList.add('active'); });
-  closeSidebar(); // Close sidebar if navigating on mobile
+  closeSidebar();
 }
 
 function switchTab(idx, btn) {
@@ -1647,7 +1923,6 @@ function answer(idx, btn) {
 
 function nextQ() { currentQ++; renderQuestion(); }
 
-// --- NEW MOBILE FUNCTIONS ---
 function toggleSidebar() {
   document.getElementById('sidebar').classList.toggle('mobile-open');
   document.getElementById('mobile-backdrop').classList.toggle('active');
