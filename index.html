@@ -155,17 +155,41 @@
   .cheat-tc { font-family:'JetBrains Mono',monospace; font-size:0.8rem; }
 
   /* SCROLLBAR */
-  ::-webkit-scrollbar { width:5px; }
+  ::-webkit-scrollbar { width:5px; height:5px; }
   ::-webkit-scrollbar-track { background:var(--bg2); }
   ::-webkit-scrollbar-thumb { background:var(--bg4); border-radius:3px; }
 
-  /* RESPONSIVE */
+  /* --- NEW MOBILE RESPONSIVENESS --- */
+  .hamburger { display: none; background: none; border: none; color: var(--text); cursor: pointer; padding: 0; align-items: center; justify-content: center; }
+  .backdrop { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 998; backdrop-filter: blur(2px); opacity: 0; transition: opacity 0.3s; }
+  .backdrop.active { display: block; opacity: 1; }
+
   @media(max-width:900px) {
     .sidebar { width:220px; min-width:220px; }
     .grid-2, .grid-3, .cheat-grid { grid-template-columns:1fr; }
+    .header-nav { overflow-x: auto; white-space: nowrap; max-width: 50vw; }
+    .header-nav::-webkit-scrollbar { display: none; }
   }
+
   @media(max-width:650px) {
-    .sidebar { display:none; }
+    .header { height: auto; min-height: 64px; flex-wrap: wrap; padding: 0.75rem 1rem; gap: 10px; }
+    .hamburger { display: flex; }
+    .tag { display: none; } /* Hide tag on mobile to save space */
+    .header-nav { width: 100%; order: 3; margin-top: 5px; max-width: 100%; justify-content: flex-start; }
+    
+    .sidebar { 
+      display: block !important; /* Overrides original inline JS display */
+      position: fixed; 
+      top: 0; 
+      left: -280px; /* Hidden by default */
+      height: 100vh; 
+      z-index: 999; 
+      transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 2px 0 15px rgba(0,0,0,0.8);
+    }
+    .sidebar.mobile-open { left: 0; }
+    
+    .main { padding: 1rem; }
   }
 
   .divider { height:1px; background:var(--card-border); margin:1.5rem 0; }
@@ -175,7 +199,16 @@
 <body>
 
 <div class="header">
-  <div class="logo">DSA Revision ⚡</div>
+  <div style="display:flex; align-items:center; gap:12px;">
+    <button class="hamburger" onclick="toggleSidebar()">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="3" y1="12" x2="21" y2="12"></line>
+        <line x1="3" y1="6" x2="21" y2="6"></line>
+        <line x1="3" y1="18" x2="21" y2="18"></line>
+      </svg>
+    </button>
+    <div class="logo">DSA Revision ⚡</div>
+  </div>
   <div class="header-nav">
     <button class="nav-btn active" onclick="showView('overview')">Overview</button>
     <button class="nav-btn" onclick="showView('pseudocode')">Pseudocodes</button>
@@ -185,8 +218,9 @@
   <div class="tag">Exam Prep</div>
 </div>
 
+<div class="backdrop" id="mobile-backdrop" onclick="closeSidebar()"></div>
+
 <div class="app">
-  <!-- SIDEBAR -->
   <div class="sidebar" id="sidebar">
     <div class="sidebar-section">
       <div class="sidebar-label">Sorting Algorithms</div>
@@ -226,10 +260,8 @@
     </div>
   </div>
 
-  <!-- MAIN CONTENT -->
   <div class="main">
 
-    <!-- OVERVIEW -->
     <div class="view active" id="view-overview">
       <div class="hero">
         <div class="hero-title">Master <span>DSA</span> for Your Exam</div>
@@ -259,14 +291,12 @@
       </div>
     </div>
 
-    <!-- PSEUDOCODE VIEW -->
     <div class="view" id="view-pseudocode">
       <div id="topic-content">
         <div class="hero-sub" style="text-align:center;margin-top:4rem;">← Select a topic from the sidebar to view pseudocode</div>
       </div>
     </div>
 
-    <!-- QUIZ VIEW -->
     <div class="view" id="view-quiz">
       <div class="topic-header">
         <div class="topic-title">Test Yourself 🧠</div>
@@ -275,7 +305,6 @@
       <div id="quiz-container"></div>
     </div>
 
-    <!-- CHEAT SHEET -->
     <div class="view" id="view-cheatsheet">
       <div class="topic-header">
         <div class="topic-title">Time Complexity Cheat Sheet</div>
@@ -508,7 +537,7 @@ const topics = {
 `<span class="cm">// LL ROTATION (Right Rotation)</span>
 <span class="cm">// Case: Node inserted in LEFT subtree of LEFT child</span>
 <span class="kw">FUNCTION</span> <span class="fn">LL_ROTATE</span>(z):           <span class="cm">// z = unbalanced node</span>
-    y <span class="op">←</span> z.left                     <span class="cm">// y = z's left child</span>
+    y <span class="op">←</span> z.left                   <span class="cm">// y = z's left child</span>
     T2 <span class="op">←</span> y.right                   <span class="cm">// T2 = y's right subtree</span>
     
     <span class="cm">// Perform rotation</span>
@@ -983,8 +1012,8 @@ front <span class="op">←</span> <span class="op">-</span><span class="num">1</
 <span class="cm">//   A   |           | A</span>
 <span class="cm">//   +   | +         | A</span>
 <span class="cm">//   B   | +         | AB</span>
-<span class="cm">//   *   | + *       | AB</span>
-<span class="cm">//   C   | + *       | ABC</span>
+<span class="cm">//   * | + * | AB</span>
+<span class="cm">//   C   | + * | ABC</span>
 <span class="cm">//   -   | -         | ABC*+</span>
 <span class="cm">//   D   | -         | ABC*+D</span>
 <span class="cm">// end   |           | ABC*+D-</span>
@@ -1217,7 +1246,7 @@ front <span class="op">←</span> <span class="op">-</span><span class="num">1</
             <span class="kw">RETURN</span> mid               <span class="cm">// Found! Return index</span>
         
         <span class="kw">ELSE IF</span> arr[mid] <span class="op">&lt;</span> target <span class="kw">THEN</span>
-            low <span class="op">←</span> mid <span class="op">+</span> <span class="num">1</span>           <span class="cm">// target is in right half</span>
+            low <span class="op">←</span> mid <span class="op">+</span> <span class="num">1</span>            <span class="cm">// target is in right half</span>
         
         <span class="kw">ELSE</span>
             high <span class="op">←</span> mid <span class="op">-</span> <span class="num">1</span>          <span class="cm">// target is in left half</span>
@@ -1244,7 +1273,7 @@ front <span class="op">←</span> <span class="op">-</span><span class="num">1</
     codes: [
 `<span class="cm">// BUBBLE SORT — adjacent element comparison</span>
 <span class="kw">FUNCTION</span> <span class="fn">BUBBLE_SORT</span>(arr, n):
-    <span class="kw">FOR</span> i <span class="op">←</span> <span class="num">0</span> <span class="kw">TO</span> n<span class="op">-</span><span class="num">2</span> <span class="kw">DO</span>           <span class="cm">// n-1 passes</span>
+    <span class="kw">FOR</span> i <span class="op">←</span> <span class="num">0</span> <span class="kw">TO</span> n<span class="op">-</span><span class="num">2</span> <span class="kw">DO</span>            <span class="cm">// n-1 passes</span>
         swapped <span class="op">←</span> FALSE             <span class="cm">// optimization flag</span>
         
         <span class="kw">FOR</span> j <span class="op">←</span> <span class="num">0</span> <span class="kw">TO</span> n<span class="op">-</span>i<span class="op">-</span><span class="num">2</span> <span class="kw">DO</span>      <span class="cm">// last i are sorted</span>
@@ -1324,7 +1353,7 @@ front <span class="op">←</span> <span class="op">-</span><span class="num">1</
             j <span class="op">←</span> j <span class="op">-</span> <span class="num">1</span>
         <span class="kw">END WHILE</span>
         
-        arr[j<span class="op">+</span><span class="num">1</span>] <span class="op">←</span> key            <span class="cm">// place key in correct spot</span>
+        arr[j<span class="op">+</span><span class="num">1</span>] <span class="op">←</span> key             <span class="cm">// place key in correct spot</span>
     <span class="kw">END FOR</span>
 <span class="kw">END FUNCTION</span>
 
@@ -1454,9 +1483,9 @@ front <span class="op">←</span> <span class="op">-</span><span class="num">1</
 
 <span class="cm">// Tree for (3 + 4) * 2:</span>
 <span class="cm">//        *</span>
-<span class="cm">//       / \</span>
+<span class="cm">//       / \\</span>
 <span class="cm">//      +   2</span>
-<span class="cm">//     / \</span>
+<span class="cm">//     / \\</span>
 <span class="cm">//    3   4</span>
 <span class="cm">// Result: EVALUATE(*) = EVAL(+) * 2 = 7 * 2 = 14</span>
 <span class="cm">// Time: O(n) — visits every node once</span>`
@@ -1494,16 +1523,17 @@ function showView(v) {
   document.querySelectorAll('.view').forEach(el => el.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
   document.getElementById('view-' + v).classList.add('active');
-  event.target.classList.add('active');
-  document.getElementById('sidebar').style.display = (v === 'pseudocode') ? 'block' : (window.innerWidth > 650 ? 'block' : 'none');
+  if(event && event.target.classList.contains('nav-btn')) event.target.classList.add('active');
+  
   if (v === 'quiz' && shuffled.length === 0) initQuiz();
+  closeSidebar(); // Close sidebar if navigating on mobile
 }
 
 function loadTopic(id) {
   const t = topics[id];
   if (!t) return;
   document.querySelectorAll('.topic-btn').forEach(b => b.classList.remove('active'));
-  event.currentTarget.classList.add('active');
+  if(event) event.currentTarget.classList.add('active');
   showViewDirect('pseudocode');
   
   let tabsHtml = t.tabs.map((tab, i) => `<button class="algo-tab ${i===0?'active':''}" onclick="switchTab(${i}, this)">${tab}</button>`).join('');
@@ -1527,6 +1557,7 @@ function loadTopic(id) {
     <div class="section-title">Exam Tips</div>
     <ul class="tips-list">${tipsHtml}</ul>
   `;
+  closeSidebar(); // Close sidebar if navigating on mobile
 }
 
 function showViewDirect(v) {
@@ -1534,6 +1565,7 @@ function showViewDirect(v) {
   document.getElementById('view-' + v).classList.add('active');
   document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b => { if(b.textContent.toLowerCase().includes(v.substring(0,4))) b.classList.add('active'); });
+  closeSidebar(); // Close sidebar if navigating on mobile
 }
 
 function switchTab(idx, btn) {
@@ -1614,6 +1646,19 @@ function answer(idx, btn) {
 }
 
 function nextQ() { currentQ++; renderQuestion(); }
+
+// --- NEW MOBILE FUNCTIONS ---
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('mobile-open');
+  document.getElementById('mobile-backdrop').classList.toggle('active');
+}
+
+function closeSidebar() {
+  const sidebar = document.getElementById('sidebar');
+  const backdrop = document.getElementById('mobile-backdrop');
+  if(sidebar) sidebar.classList.remove('mobile-open');
+  if(backdrop) backdrop.classList.remove('active');
+}
 </script>
 </body>
 </html>
